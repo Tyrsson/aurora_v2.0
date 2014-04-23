@@ -1,0 +1,29 @@
+<?php 
+$skinName = Zend_Registry::get('skinName');
+?>
+<?php echo $this->doctype(); ?>
+<html>
+<head>
+<?php 
+$this->headMeta()->prependName('viewport', 'width=device-width, initial-scale=1');
+$this->headMeta()->prependName('apple-mobile-web-app-capable', 'yes');
+echo $this->headMeta();
+?>
+
+<base href="<?php echo $this->serverUrl($this->baseUrl('/')); ?>" />
+<?php
+	
+    echo $this->headTitle();
+?>
+	<link rel="stylesheet" href="/skins/<?php echo $skinName; ?>/demos/css/themes/default/jquery.mobile-1.4.2.min.css">
+	<link rel="stylesheet" href="/skins/<?php echo $skinName; ?>/demos/_assets/css/jqm-demos.css">
+	<link rel="stylesheet" href="/skins/<?php echo $skinName; ?>/style.css">
+	<link rel="shortcut icon" href="../favicon.ico">
+	<script src="/lib/jquery/jquery.js"></script>
+	<script src="/skins/<?php echo $skinName; ?>/demos/_assets/js/index.js"></script>
+	<script src="/skins/<?php echo $skinName; ?>/jquery.mobile-1.4.2.min.js"></script>
+</head>
+<body>
+<?php echo $this->layout()->content; ?>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!-- Start of second page: #two -->
+<div data-role="page" id="<?php echo $this->label; ?>" data-theme="a">
+	<div data-role="header">
+	<?php 
+	if(!$this->isHome) {
+	?>
+		<a data-role="button" href="#Home" data-icon="arrow-l" data-iconpos="left" class="ui-btn-left">
+            Back
+        </a>
+    <?php 
+    }
+    ?>
+		<h1>
+		<?php 
+		if(Zend_Registry::get('showPageHeading')) {
+		?>
+
+					<?php 
+						echo ucwords($this->label); 
+					?>
+
+		<?php 
+		}
+		?>
+		</h1>
+		<?php 
+		if($this->isHome) {
+		?>
+		<div data-role="navbar">
+		<?php echo $this->navigation()->menu(); ?>
+		</div>
+		<?php 
+		}
+		?>
+	</div><!-- /header -->
+	<div role="main" class="ui-content">
+		<h2>
+		<?php 
+		//$this->appSettings->showPageHeading = true;
+		if(Zend_Registry::get('showPageHeading')) {
+		?>
+			<?php 
+				echo ucwords($this->label); 
+			?>
+		<?php 
+		}
+		?>
+		</h2>
+		<?php
+			if(isset($this->page) && $this->page !== null) {
+				if($this->acl->isAllowed($this->user->role, 'page', "page.manage")) {
+			?>
+					<a href="/admin/page/create">New</a>
+					<a href="/admin/page/edit/<?php echo $this->page->uri; ?>">Edit</a>
+					<?php
+					if(!$this->isHome) {
+					?>
+						<a href="/admin/page/delete/<?php echo $this->page->uri; ?>">Delete</a>
+					<?php
+					}
+			}
+			?>
+		<?php
+            //echo $this->page->content;
+
+			if($this->showFb) {
+			//echo $this->faceBookHelper($this->fb, $fbTitle = $this->page['pageName'], $fbType = null, $fbUrl = null, $fbImage = null, $fbsiteName = null, $type = 'page');
+			}
+		} 
+		?>
+		
+<!-- 		<p><a href="#home" data-direction="reverse" class="ui-btn ui-shadow ui-corner-all ui-btn-b">Back to page "one"</a></p> -->
+
+	</div><!-- /content -->
+	<div data-role="footer">
+		<h4>Page Footer Test</h4>
+	</div><!-- /footer -->
+</div><!-- /page two -->
+			

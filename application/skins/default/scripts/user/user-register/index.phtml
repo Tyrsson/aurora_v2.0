@@ -1,0 +1,12 @@
+<?php
+if($this->appSettings->enableRegistration) {
+    if(isset($this->form)) {
+    	echo $this->form;
+    }
+} 
+else {
+?>
+<span id="registration-diasabled">Registration is Disabled</span>
+<?php
+}
+?>

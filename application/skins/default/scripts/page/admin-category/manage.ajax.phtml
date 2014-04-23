@@ -1,0 +1,9 @@
+<div>
+Content tree here
+<?php 
+
+echo $this->navigation()->menu()->renderMenu($this->navContainer, array('minDepth' => 1, 'maxDepth' => null));
+Zend_Debug::dump($this->navContainer, 'nav container');
+
+?>
+</div>

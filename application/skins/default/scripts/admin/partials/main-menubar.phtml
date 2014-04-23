@@ -1,0 +1,91 @@
+<?php
+// Get the resources we need for building the menu
+$acl = Zend_Registry::get('acl');
+$log = Zend_Registry::get('log');
+?>
+
+<!-- This one is going to be a Dojo MenuBar -->
+<div id="mainMenuBar" data-dojo-type="dijit/MenuBar">
+    <?php
+    foreach($this->container as $page) 
+    { 
+        $page->cmd = $page->getHref();
+    	if($page->hasChildren()) 
+    	{
+    	?>
+    	    <div data-dojo-type="dijit/PopupMenuBarItem">
+    	       <span>
+    	           <?php 
+                        echo $page->label;
+                    ?>
+    	       </span>
+    	       <div data-dojo-type="dijit/DropDownMenu">
+    	           <?php 
+    		          foreach($page->pages as $child) 
+    		          { 
+    		              $child->cmd = $child->getHref();
+    		              if($child->hasChildren() && $child->isVisible()) {
+                   ?>
+                              <div data-dojo-type="dijit/PopupMenuItem">
+    	                          <span>
+    	                              <?php 
+                                         echo $child->label;
+                                      ?>
+    	                          </span>
+    	                          <div data-dojo-type="dijit/DropDownMenu">
+    	                              <?php 
+    	                                   foreach($child->pages as $grandchild) 
+                                           {
+                                               $grandchild->cmd = $grandchild->getHref();
+                                               if( $acl->isAllowed( Zend_Auth::getInstance()->getIdentity()->role,  $grandchild->getResource(), $grandchild->getPrivilege()) 
+                                                   && $grandchild->isVisible() ) {
+                                      ?>
+                                                  <?php 
+                                                  $grandchildProps = $grandchild->getCustomProperties();
+                                                  $log->debug($grandchildProps);
+                                                  ?>
+                                                  <div data-dojo-type="dijit/MenuItem" cmd="<?php echo $grandchild->cmd;?>">
+        		                                      <?php 
+        		                                          echo $grandchild->label;
+        		                                      ?>
+        		                                  </div>
+                                      <?php 
+                                               }
+                                           }
+    	                              ?>
+    	                          </div>
+    	                      </div>
+                   <?php 
+                          }
+                          else {
+                                    if( $acl->isAllowed( Zend_Auth::getInstance()->getIdentity()->role,  $child->getResource(), $child->getPrivilege()) 
+                                        && $child->isVisible() ) {
+        		   ?>
+                    		              <div data-dojo-type="dijit/MenuItem" cmd="<?php echo $child->cmd;?>">
+                    		                  <?php 
+                    		                      echo $child->label;
+                    		                  ?>
+                    		              </div>
+    		       <?php 
+    		                        }
+    		              }
+    		          }
+    	           ?>
+    	       </div>
+            </div>
+    	<?php 
+    	}
+    	else {
+                if( $acl->isAllowed( Zend_Auth::getInstance()->getIdentity()->role,  $page->getResource(), $page->getPrivilege()) && $page->isVisible() ) {
+        ?>
+                    <div data-dojo-type="dijit/MenuBarItem" cmd="<?php echo $page->cmd;?>">
+                        <?php 
+                            echo $page->label;
+                        ?>
+                    </div>
+    <?php
+                } 
+        }
+    }
+    ?>
+</div>

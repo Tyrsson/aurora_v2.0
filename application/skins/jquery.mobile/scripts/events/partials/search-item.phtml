@@ -1,0 +1,26 @@
+<div class="event-listing">
+	<h4>
+		<?php echo $this->title($this->model->title); ?>
+	</h4>
+	
+	<p>
+	<?php 
+	//Zend_Debug::dump($this->model);
+	?>
+		<?php echo !empty($this->model->addrCity) ? $this->model->addrCity . ',' : '';?> <?php echo !empty($this->model->addrState) ? $this->model->addrState : ''; ?>
+	</p>
+	<p>
+	    <span>
+	    	<?php echo date('F j, Y', strtotime($this->model->startDate)); ?> - <?php echo date('F j, Y', strtotime($this->model->endDate)); ?>
+	    	<br />
+	    </span>
+	</p>
+	<p>
+	<?php 
+	echo $this->model->eventContent;
+	?>
+	</p>
+	
+	<p class="moreinfo"><a href="<?php echo $this->model->url; ?>">More info <span>&raquo;</span></a></p>
+	<hr />
+</div>

@@ -1,0 +1,38 @@
+<?php
+	echo $this->doctype();
+?>
+<html>
+<head>
+
+<base href="<?php echo $this->serverUrl($this->baseUrl('/')); ?>" />
+
+<?php
+
+?>
+
+</head>
+<body class="claro">
+	<div>
+		<div>
+		<?php 
+		try {
+			echo $this->navigation()->menu();
+		} catch (Zend_Exception $e) {
+            //echo $e->getMessage();
+		}
+			
+		?>
+		</div>
+ 		<div> 
+		<?php 
+            echo $this->layout()->content;
+        ?>
+		</div> 
+		<div >
+		<?php 
+		
+		?>
+		</div>
+	</div>
+</body>
+</html>

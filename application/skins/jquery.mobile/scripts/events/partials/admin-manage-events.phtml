@@ -1,0 +1,8 @@
+<?php
+?>
+
+<ul class="manage-events">
+<li class="title"><?php echo $this->model->title; ?></li>
+<li><?php echo $this->button('edit' . $this->model->id, '/admin/events/edit/' . $this->model->id, array('label' => 'Edit Event'), array('class' => 'adminUiButton')); ?></li>
+<li><?php echo $this->button('delete' . $this->model->id, '/admin/events/delete/' . $this->model->id, array('label' => 'Delete Event'), array('class' => 'adminUiButton')); ?></li>
+</ul>

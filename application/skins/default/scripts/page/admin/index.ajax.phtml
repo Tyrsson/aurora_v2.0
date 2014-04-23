@@ -1,0 +1,27 @@
+<?php 
+// $this->headLink()->prependStylesheet('/lib/dojo/resources/dojo.css', 'screen')
+//      //->headLink()->appendStylesheet('/lib/dojox/grid/resources/Grid.css', 'screen')
+//      ->headLink()->appendStylesheet('/lib/dojox/grid/enhanced/resources/claro/EnhancedGrid.css', 'screen');
+// // $this->headScript()->offsetSetScript(3, 
+// // '
+  
+// // ');
+
+
+?>
+
+<ul>
+    <li><?php echo $this->button('createCategory', '/admin/page/create/category', /* params */array('label' => 'Create New Category'), /* attribs */array('class' => 'pageManagerButton')); ?></li>
+    <li><?php echo $this->button('createPage', '/admin/page/create', /* params */array('label' => 'Create New Page'), /* attribs */array('class' => 'pageManagerButton')); ?></li>
+    <li><?php echo $this->button('editHome', '/admin/page/edit/site/Home', /* params */array('label' => 'Edit Home Page'), /* attribs */array('class' => 'pageManagerButton')); ?></li>
+</ul>
+
+<?php 
+//Zend_Debug::dump($this->navigation[1]['pages'][2]['pages']);
+$it = new System_Db_RecursiveListIterator(new RecursiveArrayIterator($this->navigation[1]['pages'][2]['pages']), RecursiveIteratorIterator::SELF_FIRST);
+$it->setView($this);
+echo "<ul>\n";
+foreach($it as $key => $item);
+echo "</ul>\n";
+
+?>

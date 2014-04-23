@@ -1,0 +1,33 @@
+<?php
+$auth = Zend_Auth::getInstance();
+// Identity exists; get it
+$identity = $auth->getIdentity();
+$acl = new User_Acl_Acl();
+$role = new User_Acl_Role_User();
+?>
+<div id="<?php echo strtolower(str_replace(" ", "-", $this->model->userName));?>" data-dojo-type="dijit/TitlePane" data-dojo-props="title: '<?php echo $this->model->userName;?>', open: false">
+    <div class="userDetails">
+        <div class="userAvater">
+            <?php 
+                echo $this->gravatar()->setEmail($this->model->email)->setDefaultImg(Zend_View_Helper_Gravatar::DEFAULT_MM);
+            ?>
+        </div>
+        <div class="userName">
+            <h6><?php echo $this->model->firstName; ?>&nbsp;<?php echo $this->model->lastName; ?></h6>
+        </div>
+        <div class="userActions">
+            <?php 
+            if ($acl->isAllowed($role, 'admin:area', 'admin:edit'))
+            {
+            ?>
+                <ul style="list-style: none;">
+                    <li><?php echo $this->button(str_replace(" ", "-", 'delete '.$this->model->userName), '/admin/user/delete/' . $this->model->userId. '/' . Zend_Registry::get('userListPage'), array('label' => 'Delete'), array('class' => 'adminUiButton')); ?></li>
+                    <li><?php echo $this->button(str_replace(" ", "-", 'edit '.$this->model->userName), '/admin/user/edit/' . $this->model->userId . '/' . Zend_Registry::get('userListPage'), array('label' => 'Edit'), array('class' => 'adminUiButton')); ?></li>
+                    <li><?php echo $this->button(str_replace(" ", "-", 'summarize '.$this->model->userName), '/user/account/summary/?uid=' . $this->model->userId, array('label' => 'Summary'), array('class' => 'adminUiButton')); ?></li>
+                </ul>
+            <?php 
+            }
+            ?>
+        </div>
+    </div>
+</div>

@@ -6,7 +6,7 @@ defined('APPLICATION_PATH')
 
 // Define application environment
 defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
 
 $paths = array(realpath(APPLICATION_PATH . '/../library'));
 if (function_exists('zend_deployment_library_path') && zend_deployment_library_path('Zend Framework 1')) {

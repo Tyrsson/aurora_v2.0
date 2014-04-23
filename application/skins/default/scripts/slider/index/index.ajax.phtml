@@ -1,0 +1,19 @@
+<?php 
+$imagePrefix = 'resized_';
+?>
+<div data-dojo-type="dojox/widget/AutoRotator" data-dojo-props="duration:4000, transition:'dojox.widget.rotator.swap'" class="rotator">
+    <?php 
+    if(isset($this->slides) && count($this->slides)) {
+        foreach($this->slides as $slide) {
+    ?>
+            <img class="pane" src="modules/slider/_thumbs/<?php echo $imagePrefix . $slide->image;?>" width="580" height="350" style="display:block; overflow:hidden;" />
+    <?php 
+        }
+    }
+    else {
+    ?>
+        <img class="pane" src="modules/slider/_thumbs/slider_default.png" width="580" height="350" style="display:block; overflow:hidden;" />
+    <?php 
+    }
+    ?>
+</div>

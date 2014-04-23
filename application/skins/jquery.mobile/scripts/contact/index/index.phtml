@@ -1,0 +1,15 @@
+<div data-role="page" id="<?php echo $this->controller .'-'.$this->action; ?>" data-theme="a">
+	<div data-role="header" data-add-back-btn="true">
+	<h3><?php echo $this->action;?></h3>
+    </div>
+    <div role="main" class="ui-content">
+    <?php
+	if(isset($this->form)) {
+    	echo $this->form;
+	}
+	?>
+    </div>
+    <div data-role="footer">
+		<h4>Page Footer</h4>
+	</div><!-- /footer -->
+</div>
