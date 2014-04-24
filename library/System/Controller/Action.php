@@ -6,7 +6,6 @@
  * @author
  * @version
  */
-
 require_once 'Zend/Controller/Action.php';
 
 class System_Controller_Action extends Zend_Controller_Action {
