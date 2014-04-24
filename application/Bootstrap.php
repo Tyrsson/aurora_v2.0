@@ -13,6 +13,29 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected $_cache;
     protected $_isMobile = false;
     
+//     protected function _initRoutes()
+//     {
+//         $front = Zend_Controller_Front::getInstance();
+//         $this->router = $front->getRouter();
+    
+//         $route = new Zend_Controller_Router_Route(
+//                 ':cat/:page',
+//                 array(
+//                         'module'     => 'page',
+//                         'controller' => 'index',
+//                         'action'     => 'index',
+//                         'cat'        => null,
+//                         'page'        => 'Home',
+//                         'format'     => 'html'
+//                 ),
+//                 array(
+//                         'cat'     => '[a-zA-Z0-9_-]+',
+//                         'page'     => '[a-zA-Z0-9_-]+',
+//                         'format'  => '[a-z]+'
+//                 )
+//         );
+//         $this->router->addRoute('landing', $route);
+//     }
     protected function _initMysql() {
         $this->bootstrap('db');
         switch (APPLICATION_ENV) {
