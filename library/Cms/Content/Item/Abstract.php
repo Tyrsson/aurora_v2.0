@@ -27,13 +27,15 @@ abstract class Cms_Content_Item_Abstract
     }
     protected function _getProperties()
     {
+    	
         $propertyArray = array();
         $class = new Zend_Reflection_Class($this);
         $properties = $class->getProperties();
         foreach ($properties as $property) {
             if ($property->isPublic()) {
                 $propertyArray[] = $property->getName();
-            } }
+            } 
+        }
             return $propertyArray;
     }
     protected function _callSetterMethod ($property, $data)
