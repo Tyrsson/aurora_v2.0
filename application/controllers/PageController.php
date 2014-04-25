@@ -42,12 +42,12 @@ class PageController extends Zend_Controller_Action
 //                             basename($pageForm->image->getFileName());
 //                 }
                 // save the content item
-                try {
+               // try {
                     $itemPage->save();
                     return $this->_forward('list');
-                } catch (Exception $e) {
-                    echo $e->getMessage();
-                }
+                //} catch (Exception $e) {
+                    //echo $e->getMessage();
+                //}
             } 
         }
         
