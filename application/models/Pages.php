@@ -18,6 +18,9 @@ class Aurora_Model_Pages extends Zend_Db_Table_Abstract
     protected $_sequence = true;
     protected $_primary = 'id';
     
+    protected $_rowsetClass = 'Aurora_Model_Rowset_Pages';
+    protected $_rowClass = 'Aurora_Model_Row_Page';
+    
     protected $_dependentTables = array('Aurora_Model_ContentNodes');
     protected $_referenceMap = array(
         'Page' => array(
