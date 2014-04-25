@@ -17,17 +17,19 @@ abstract class Cms_Content_Item_Abstract
         if(null != $pageId) {
             $this->loadPageObject(intval($pageId));
         }
+        Zend_Debug::dump(__METHOD__);
     } 
     protected function _getInnerRow ($id = null)
     {
         if ($id == null) {
             $id = $this->id;
         }
+        Zend_Debug::dump(__METHOD__);
         return $this->_pageModel->find($id)->current();
+        
     }
     protected function _getProperties()
     {
-    	
         $propertyArray = array();
         $class = new Zend_Reflection_Class($this);
         $properties = $class->getProperties();
@@ -36,10 +38,13 @@ abstract class Cms_Content_Item_Abstract
                 $propertyArray[] = $property->getName();
             } 
         }
-            return $propertyArray;
+        Zend_Debug::dump(__METHOD__);
+        return $propertyArray;
+            
     }
     protected function _callSetterMethod ($property, $data)
     {
+    	Zend_Debug::dump(__METHOD__);
         //create the method name
         $method = Zend_Filter::filterStatic($property, 'Word_UnderscoreToCamelCase');
         $methodName = '_set' . $method;
@@ -48,6 +53,7 @@ abstract class Cms_Content_Item_Abstract
         } else {
             return self::NO_SETTER;
         }
+        
     }
     public function loadPageObject($id)
     {
@@ -75,10 +81,12 @@ abstract class Cms_Content_Item_Abstract
                         }
                         $this->$key = $value;
                     }
-                } }
+                } 
+            }
          } else {
                 throw new Zend_Exception("Unable to load content item");
          } 
+         Zend_Debug::dump(__METHOD__);
     }
     public function save()
     {
@@ -87,17 +95,20 @@ abstract class Cms_Content_Item_Abstract
         } else {
             $this->_insert();
         } 
+        Zend_Debug::dump(__METHOD__);
     }
     protected function _insert()
     {
         $pageId = $this->_pageModel->createPage($this->name, $this->_namespace, $this->parent_id);
         $this->id = $pageId;
         $this->_update();
+        Zend_Debug::dump(__METHOD__);
     }
     protected function _update()
     {
         $data = $this->toArray();
         $this->_pageModel->updatePage($this->id, $data);
+        Zend_Debug::dump(__METHOD__);
     }
     public function delete()
     {
@@ -106,6 +117,7 @@ abstract class Cms_Content_Item_Abstract
         } else {
             throw new Zend_Exception('Unable to delete item; the item is empty!');
         } 
+        Zend_Debug::dump(__METHOD__);
     }
     public function toArray()
     {
@@ -113,6 +125,8 @@ abstract class Cms_Content_Item_Abstract
         foreach ($properties as $property) {
             $array[$property] = $this->$property;
         }
+        Zend_Debug::dump(__METHOD__);
         return $array;
+        
     }
 }

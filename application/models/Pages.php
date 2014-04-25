@@ -31,6 +31,7 @@ class Aurora_Model_Pages extends Zend_Db_Table_Abstract
     
     public function createPage($name, $namespace, $parentId = 0)
     {
+    	Zend_Debug::dump(__METHOD__);
         //create the new page
         $row = $this->createRow();
         $row->name = $name;
@@ -44,6 +45,7 @@ class Aurora_Model_Pages extends Zend_Db_Table_Abstract
     }
     public function updatePage($id, $data)
     {
+    	Zend_Debug::dump(__METHOD__);
         // find the page
         $row = $this->find($id)->current();
         if($row) {

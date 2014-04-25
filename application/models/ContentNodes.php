@@ -18,6 +18,8 @@ class Aurora_Model_ContentNodes extends Zend_Db_Table_Abstract
     protected $_name = 'content_nodes';
     protected $_sequence = true;
     protected $_primary = 'id';
+    protected $_rowClass = 'Aurora_Model_Row_ContentNode';
+    protected $_rowsetClass = 'Aurora_Model_Rowset_ContentNodes';
     
     protected $_referenceMap = array(
         'Page' =>
@@ -29,7 +31,11 @@ class Aurora_Model_ContentNodes extends Zend_Db_Table_Abstract
                 'onUpdate'      => self::RESTRICT
             )
     );
-    
+
+    public function init()
+    {
+    	Zend_Debug::dump(__METHOD__);
+    }
     public function setNode($pageId, $node, $value)
     {
         // fetch the row if it exists
@@ -46,5 +52,6 @@ class Aurora_Model_ContentNodes extends Zend_Db_Table_Abstract
         //set the content
         $row->content = $value;
         $row->save();
+        Zend_Debug::dump(__METHOD__);
     }
 }
