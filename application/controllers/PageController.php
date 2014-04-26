@@ -23,6 +23,8 @@ class PageController extends Zend_Controller_Action
     {
         $pageForm = new Cms_Form_ManagePage();
         $pageForm->setAction('/page/create');
+//         $id = $pageForm->getElement('id');
+//         $id->setValue(null);
         
         if($this->_request->isPost()) {
             if($pageForm->isValid($this->_request->getPost())) {
