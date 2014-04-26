@@ -6,3 +6,5 @@ CREATE TABLE `pages` (
   `date_created` int(11) default NULL,
   PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
+
+
