@@ -60,7 +60,7 @@ class Cms_Form_ManagePage extends Zend_Form
         $content->setAttrib('rows',12);
         // add the element to the form
         $this->addElement($content);
-        $submit = $this->addElement('submit', 'submit', array('label' => 'Submit'));
+        $submit = $this->addElement('submit', 'submit', array('label' => 'Submit', 'ignore' => true));
         
     }
 }

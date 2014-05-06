@@ -8,7 +8,7 @@
  */
 require_once 'Zend/Db/Table/Abstract.php';
 
-class Aurora_Model_Pages extends Zend_Db_Table_Abstract
+class Aurora_Model_Pages extends Cms_Content_Item_Abstract
 {
 
     /**
@@ -17,6 +17,7 @@ class Aurora_Model_Pages extends Zend_Db_Table_Abstract
     protected $_name = 'pages';
     protected $_sequence = true;
     protected $_primary = 'id';
+    public $_nameSpace = 'page';
     
     protected $_rowsetClass = 'Aurora_Model_Rowset_Pages';
     protected $_rowClass = 'Aurora_Model_Row_Page';
@@ -32,18 +33,25 @@ class Aurora_Model_Pages extends Zend_Db_Table_Abstract
         )
     );
     
-    public function createPage($name, $namespace, $parentId = 0)
+    public function createPage($data, $parentId = 0)
     {
-    	Zend_Debug::dump(__METHOD__);
+    	
         //create the new page
-        $row = $this->createRow();
-        $row->name = $name;
-        $row->namespace = $namespace;
+        $row = $this->createRow($data);
+
+        $row->namespace = $this->_nameSpace;
         $row->parent_id = $parentId;
+        
         $row->date_created = time();
         $row->save();
+        
+        $nodes = new Aurora_Model_ContentNodes();
+        
         // now fetch the id of the row you just created and return it
         $id = $this->_db->lastInsertId();
+        
+        $nodes->saveNode($data, $id);
+            
         return $id;
     }
     public function updatePage($id, $data)

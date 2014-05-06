@@ -28,13 +28,17 @@ class PageController extends Zend_Controller_Action
             if($pageForm->isValid($this->_request->getPost())) {
                 
                 $data = $pageForm->getValues();
+                
+                $page = new Aurora_Model_Pages();
+                $page->createPage($data);
+                
                 // create a new page item
-                $itemPage = new Cms_Content_Item_Page();
-                $itemPage->name = $data['name'];
-                $itemPage->headline = $data['headline'];
-                $itemPage->description = $data['description'];
-                $itemPage->content = $data['content'];
-                $itemPage->image = $data['image'];
+//                 $itemPage = new Cms_Content_Item_Page();
+//                 $itemPage->name = $data['name'];
+//                 $itemPage->headline = $data['headline'];
+//                 $itemPage->description = $data['description'];
+//                 $itemPage->content = $data['content'];
+//                 $itemPage->image = $data['image'];
                 // upload the image
 //                 if($pageForm->image->isUploaded()){
 //                     $pageForm->image->receive();
@@ -43,7 +47,7 @@ class PageController extends Zend_Controller_Action
 //                 }
                 // save the content item
                // try {
-                    $itemPage->save();
+//                     $itemPage->save();
                     return $this->_forward('list');
                 //} catch (Exception $e) {
                     //echo $e->getMessage();

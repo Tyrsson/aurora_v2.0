@@ -1,64 +1,18 @@
 <?php
-require APPLICATION_PATH . '/models/ContentNodes.php';
-require APPLICATION_PATH . '/models/Pages.php';
-abstract class Cms_Content_Item_Abstract
+abstract class Cms_Content_Item_Abstract extends Zend_Db_Table_Abstract
 {
-    const NO_SETTER = 'setter method does not exist';
-    
     public $id;
-    public $name;
-    public $parent_id = 0;
-    protected $_namespace = 'page';
-    protected $_pageModel;
+    public $_nameSpace;
     
-    public function __construct($pageId = null)
+    public function init()
     {
-        $this->_pageModel = new Aurora_Model_Pages();
-        if(null != $pageId) {
-            $this->loadPageObject(intval($pageId));
-        }
-        Zend_Debug::dump(__METHOD__);
-    } 
-    protected function _getInnerRow ($id = null)
+        return $this;
+    }
+    public function loadContentObject($id)
     {
-        if ($id == null) {
-            $id = $this->id;
-        }
-        Zend_Debug::dump(__METHOD__);
-        return $this->_pageModel->find($id)->current();
         
-    }
-    protected function _getProperties()
-    {
-        $propertyArray = array();
-        $class = new Zend_Reflection_Class($this);
-        $properties = $class->getProperties();
-        foreach ($properties as $property) {
-            if ($property->isPublic()) {
-                $propertyArray[] = $property->getName();
-            } 
-        }
-        Zend_Debug::dump(__METHOD__);
-        return $propertyArray;
-            
-    }
-    protected function _callSetterMethod ($property, $data)
-    {
-    	Zend_Debug::dump(__METHOD__);
-        //create the method name
-        $method = Zend_Filter::filterStatic($property, 'Word_UnderscoreToCamelCase');
-        $methodName = '_set' . $method;
-        if (method_exists($this, $methodName)) {
-            return $this->$methodName($data);
-        } else {
-            return self::NO_SETTER;
-        }
         
-    }
-    public function loadPageObject($id)
-    {
-        $this->id = $id;
-        $row = $this->_getInnerRow();
+
         if($row) {
             
             if($row->namespace != $this->_namespace) {
@@ -86,47 +40,39 @@ abstract class Cms_Content_Item_Abstract
          } else {
                 throw new Zend_Exception("Unable to load content item");
          } 
-         Zend_Debug::dump(__METHOD__);
+
     }
-    public function save()
+	/**
+     * @return the $id
+     */
+    public function getId ()
     {
-        if(isset($this->id)) {
-            $this->_update();
-        } else {
-            $this->_insert();
-        } 
-        Zend_Debug::dump(__METHOD__);
+        return $this->id;
     }
-    protected function _insert()
+
+	/**
+     * @param field_type $id
+     */
+    public function setId ($id)
     {
-        $pageId = $this->_pageModel->createPage($this->name, $this->_namespace, $this->parent_id);
-        $this->id = $pageId;
-        $this->_update();
-        Zend_Debug::dump(__METHOD__);
+        $this->id = $id;
     }
-    protected function _update()
+
+	/**
+     * @return the $_nameSpace
+     */
+    public function getNameSpace ()
     {
-        $data = $this->toArray();
-        $this->_pageModel->updatePage($this->id, $data);
-        Zend_Debug::dump(__METHOD__);
+        return $this->_nameSpace;
     }
-    public function delete()
+
+	/**
+     * @param field_type $_nameSpace
+     */
+    public function setNameSpace ($_nameSpace)
     {
-        if(isset($this->id)) {
-            $this->_pageModel->deletePage($this->id);
-        } else {
-            throw new Zend_Exception('Unable to delete item; the item is empty!');
-        } 
-        Zend_Debug::dump(__METHOD__);
+        $this->_nameSpace = $_nameSpace;
     }
-    public function toArray()
-    {
-        $properties = $this->_getProperties();
-        foreach ($properties as $property) {
-            $array[$property] = $this->$property;
-        }
-        Zend_Debug::dump(__METHOD__);
-        return $array;
-        
-    }
+
+    
 }
