@@ -54,52 +54,52 @@ class System_Application_Module_Bootstrap extends Zend_Application_Module_Bootst
     					'namespace' => $this->_moduleName . '_',
     			)
     	);
+        //TODO: reintroduce this code, after cms is finished	
+//     	$hasPlugin = false;
+//     	$type = false;
     	
-    	$hasPlugin = false;
-    	$type = false;
+//     	$table = new Zend_Db_Table('plugins');
+//     	$select = new Zend_Db_Table_Select($table);
+//     	$plugins = $table->fetchAll($select->where('module = ?',  $this->_moduleName));
     	
-    	$table = new Zend_Db_Table('plugins');
-    	$select = new Zend_Db_Table_Select($table);
-    	$plugins = $table->fetchAll($select->where('module = ?',  $this->_moduleName));
-    	
-    	if(count($plugins) && $plugins !== null) {
+//     	if(count($plugins) && $plugins !== null) {
     		
-    		$hasPlugin = true;
+//     		$hasPlugin = true;
     		
-    		$this->_resourceLoader->addResourceTypes(array(
-    				'plugins' => array(
-    						'path' => $this->modulePath . '/plugins',
-    						'namespace' => $this->_moduleName . '_' .'Plugin')
-    				)
-    		);
+//     		$this->_resourceLoader->addResourceTypes(array(
+//     				'plugins' => array(
+//     						'path' => $this->modulePath . '/plugins',
+//     						'namespace' => $this->_moduleName . '_' .'Plugin')
+//     				)
+//     		);
     		
     		
-    		foreach ($plugins as $plugin) {
+//     		foreach ($plugins as $plugin) {
     			
-    			if(isset($plugin->type) && !empty($plugin->type))
-    			{
-    				$type = strtolower($plugin->type);
-    			}
+//     			if(isset($plugin->type) && !empty($plugin->type))
+//     			{
+//     				$type = strtolower($plugin->type);
+//     			}
     				
-    			switch($type) {
-    				case 'action' :
-    						Zend_Controller_Action_HelperBroker::addHelper(new $plugin->class());
-    						break;
-    				case 'controller' :
-    						$pluginObj = new $plugin->class();
-    						$front = Zend_Controller_Front::getInstance();
-    						$front->registerPlugin(new $plugin->class($pluginObj));
-    						break;
-    			}
+//     			switch($type) {
+//     				case 'action' :
+//     						Zend_Controller_Action_HelperBroker::addHelper(new $plugin->class());
+//     						break;
+//     				case 'controller' :
+//     						$pluginObj = new $plugin->class();
+//     						$front = Zend_Controller_Front::getInstance();
+//     						$front->registerPlugin(new $plugin->class($pluginObj));
+//     						break;
+//     			}
     			
-    			if($plugin->libNameSpace !== null) {
-    				$autoLoader = Zend_Loader_Autoloader::getInstance();
-    				$autoLoader->registerNamespace($plugin->libNameSpace);
-    			}
+//     			if($plugin->libNameSpace !== null) {
+//     				$autoLoader = Zend_Loader_Autoloader::getInstance();
+//     				$autoLoader->registerNamespace($plugin->libNameSpace);
+//     			}
     			
-    		}
+//     		}
     		
-    	}
+//     	}
     	
     	return $this->_resourceLoader;
     }

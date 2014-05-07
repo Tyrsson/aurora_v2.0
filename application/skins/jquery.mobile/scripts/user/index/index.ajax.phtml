@@ -1,0 +1,32 @@
+<div data-role="page" id="<?php echo $this->controller .'-'.$this->action; ?>" data-theme="a">
+	<div data-role="header" data-add-back-btn="true">
+	<h3><?php echo $this->action;?></h3>
+    </div>
+    <div role="main" class="ui-content">
+    <?php
+	if(isset($this->form)) {
+    	//echo $this->form;
+	}
+	?>
+	        <form action="/user/login" method="post" data-ajax="false">
+            <div data-role="fieldcontain" data-controltype="textinput">
+                <label for="username">
+                    User Name
+                </label>
+                <input name="username" id="username" placeholder="John Doe" value="" type="text">
+            </div>
+            <div data-role="fieldcontain" data-controltype="textinput">
+                <label for="password">
+                    Password
+                </label>
+                <input name="password" id="password" placeholder="" value="" type="password">
+            </div>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <div data-role="footer">
+		<h4>Page Footer</h4>
+	</div><!-- /footer -->
+</div>
+
+

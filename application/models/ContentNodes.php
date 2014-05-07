@@ -32,13 +32,9 @@ class Aurora_Model_ContentNodes extends Zend_Db_Table_Abstract
             )
     );
 
-    public function init()
-    {
-    	Zend_Debug::dump(__METHOD__);
-    }
     public function saveNode($data, $pageId)
     {
-        Zend_Debug::dump($data);
+        //Zend_Debug::dump($data);
         if(isset($data['id'])) {
             unset($data['id']);
         }
@@ -50,29 +46,6 @@ class Aurora_Model_ContentNodes extends Zend_Db_Table_Abstract
             $row->page_id = $pageId;
             $row->save();
         }
-//         $nodeCount = count($data);
-//         for ($i = 0; $i < $nodeCount; $i++) {
-            
-//             $row = $this->createRow();
-//             $row->setFromArray($data[$i]);
-//             $row->page_id = $pageId;
-//             $row->save();
-//         }
-        
-//         // fetch the row if it exists
-//         $select = $this->select();
-//         $select->where("page_id = ?", $pageId);
-//         $select->where("node = ?", $node);
-//         $row = $this->fetchRow($select);
-//         //if it does not then create it
-//         if(!$row) {
-//             $row = $this->createRow();
-//             $row->page_id = $pageId;
-//             $row->node = $node;
-//         }
-//         //set the content
-//         $row->content = $value;
-//         $row->save();
-//         Zend_Debug::dump(__METHOD__);
+
     }
 }

@@ -12,6 +12,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected $_config;
     protected $_cache;
     protected $_isMobile = false;
+    private   $_debug = false;
     
 //     protected function _initRoutes()
 //     {
@@ -50,6 +51,69 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 Zend_Db_Table_Abstract::setDefaultMetadataCache($this->_cache);
                 break;
         }
+        // echo __METHOD__;
+    }
+    /**
+     * Setup the logging
+     */
+    protected function _initLogging() {
+        // table column mapping array
+        $columnMapping = array(
+                'userId' => 'userId',
+                'userName' => 'userName',
+                'timeStamp' => 'timeStamp',
+                'priorityName' =>'priorityName',
+                'priority' => 'priority',
+                'message' => 'message');
+    
+        $this->bootstrap('frontController');
+        $this->_logger = new System_Log();
+        switch($this->_debug) {
+            case true :
+                $productionFilter = new Zend_Log_Filter_Priority(Zend_Log::DEBUG);
+                break;
+            case false :
+                $productionFilter = new Zend_Log_Filter_Priority(Zend_Log::INFO);
+                break;
+            default:
+                $productionFilter = new Zend_Log_Filter_Priority(Zend_Log::INFO);
+                break;
+        }
+        switch(APPLICATION_ENV) {
+            case 'production' :
+                $writer = new Zend_Log_Writer_Db(Zend_Db_Table_Abstract::getDefaultAdapter(), 'log', $columnMapping);
+                $writer->addFilter($productionFilter);
+                break;
+            case 'development' :
+                $writer = new Zend_Log_Writer_Firebug();
+                break;
+        }
+        $this->_logger->addWriter($writer);
+        Zend_Registry::set('log', $this->_logger);
+        // echo __METHOD__;
+    }
+    protected function _initSession() {
+        //if('production' == $this->getEnvironment()) {
+        //$this->_logger->info('Bootstrap ' . __METHOD__);
+        $this->sessionConfig = array(
+                'name'           => 'session',
+                'primary'        => 'id',
+                'modifiedColumn' => 'modified',
+                'dataColumn'     => 'data',
+                'lifetimeColumn' => 'lifetime'
+        );
+        Zend_Session::setOptions(array(
+        //'cookie_secure' => true, //only if using SSL
+        //'use_only_cookies' => true,
+        'gc_maxlifetime' => ( isset($this->appSettings->sessionLength) ) ? (int) $this->appSettings->sessionLength : 15 * 60, // use setting or fall back to 15 minutes
+        'cookie_httponly' => true
+        )
+        );
+    
+        Zend_Session::setSaveHandler(new Zend_Session_SaveHandler_DbTable($this->sessionConfig));
+        Zend_Session::start();
+        // }
+        //Zend_Session::regenerateId();
         // echo __METHOD__;
     }
     protected function _initSettings()
@@ -141,6 +205,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $viewRenderer->setView($view);
         Zend_Controller_Action_HelperBroker::addHelper($viewRenderer);
 
+    }
+    protected function _initActionHelpers()
+    {
+        //$this->_logger->info('Bootstrap ' . __METHOD__);
+        Zend_Controller_Action_HelperBroker::addHelper(new System_Controller_Action_Helper_AdminAction());
     }
 }
 

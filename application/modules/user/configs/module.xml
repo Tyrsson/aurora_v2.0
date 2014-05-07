@@ -1,0 +1,57 @@
+<config>
+	<user>
+		<register>
+			<label>Register</label>
+			<uri>/user/register</uri>
+			<resource>user</resource>
+			<privilege>user.register</privilege>
+			<hassetting>true</hassetting>
+			<setting>enableRegistration</setting>
+		</register>
+		<login>
+			<label>Login</label>
+			<uri>/user/login</uri>
+			<resource>user</resource>
+			<privilege>user.login</privilege>
+			<class>settings-controlled</class>
+			<hassetting>true</hassetting>
+			<setting>enableMainMenuLogin</setting>
+		</login>
+	    <logout>
+			<label>Logout</label>
+			<uri>/user/login/logout</uri>
+			<resource>user</resource>
+			<privilege>user.logout</privilege>
+		</logout>
+		<account>
+			<label>Account</label>
+			<uri>/user/account/summary</uri>
+			<resource>user</resource>
+			<privilege>user.account-editown</privilege>
+		</account>
+	</user>
+	<admin-user>
+	    <manageusers>
+	        <label>User Manager</label>
+	        <uri>/admin/user</uri>
+	        <resource>user</resource>
+	        <privilege>admin.edit.user</privilege>
+<!-- 	        <pages>
+	            <createuser>
+	                <label>Create User</label>
+	                <uri>/admin/user/create</uri>
+	                <cmd>/admin/user/create</cmd>
+	                <resource>user</resource>
+                    <privilege>admin.edit.user</privilege>
+	            </createuser>
+	        </pages> -->
+	    </manageusers>
+	    <adminlogout>
+			<label>Logout</label>
+			<uri>/user/login/logout</uri>
+			<resource>user</resource>
+			<privilege>user.logout</privilege>
+			<order>10000</order>
+		</adminlogout>
+	</admin-user>
+</config>

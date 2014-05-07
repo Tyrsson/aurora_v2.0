@@ -21,6 +21,7 @@ class PageController extends Zend_Controller_Action
     }
     public function createAction()
     {
+        $this->_helper->adminAction();
         $pageForm = new Cms_Form_ManagePage();
         $pageForm->setAction('/page/create');
         
