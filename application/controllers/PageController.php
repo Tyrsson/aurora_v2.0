@@ -73,9 +73,9 @@ class PageController extends Zend_Controller_Action
     }
     public function editAction()
     {
-    
+        $this->_helper->adminAction();
         $id = $this->_request->getParam('id');
-        $itemPage = new Cms_Content_Item_Page($id);
+        $model = new Aurora_Model_Pages();
         $pageForm = new Cms_Form_ManagePage();
         $pageForm->setAction('/page/edit');
         if($this->_request->isPost()) {
@@ -83,32 +83,29 @@ class PageController extends Zend_Controller_Action
                 
                 $data = $pageForm->getValues();
                 //Zend_Debug::dump($data);
-                $itemPage->name = $data['name'];
-                $itemPage->headline = $data['headline'];
-                $itemPage->description = $data['description'];
-                $itemPage->content = $data['content'];
-                $itemPage->image = $data['image'];
-    //             if($pageForm->image->isUploaded()){
-    //                 $pageForm->image->receive();
-    //                 $itemPage->image = '/images/upload/' .
-    //                     basename($pageForm->image->getFileName());
-    //             }
+
                 // save the content item
-                $itemPage->save();
-                return $this->_forward('list');
+                $model->updatePage($id, $data);
+                
+                return $this->forward('list');
             }
         }
         else {
-        	// create the image preview 
-        	$imagePreview = $pageForm->createElement('image', 'image_preview');
-        	// element options 
-        	$imagePreview->setLabel('Preview Image: '); 
-        	$imagePreview->setAttrib('style', 'width:200px;height:auto;'); 
-        	// add the element to the form 
-        	$imagePreview->setOrder(4); 
-        	$imagePreview->setImage('/modules/cms/content/'.$itemPage->image); 
-        	$pageForm->addElement($imagePreview);
-        	$pageForm->populate($itemPage->toArray());
+            $page = $model->fetch($id);
+            if(isset($page['image']) && $page['image'] != null)
+            {
+                // create the image preview
+                $imagePreview = $pageForm->createElement('image', 'image_preview');
+                // element options
+                $imagePreview->setLabel('Preview Image: ');
+                $imagePreview->setAttrib('style', 'width:200px;height:auto;');
+                // add the element to the form
+                $imagePreview->setOrder(4);
+                $imagePreview->setImage('/modules/cms/content/'.$page['image']);
+                $pageForm->addElement($imagePreview);
+            }
+        	
+        	$pageForm->populate($page);
         }
         $this->view->form = $pageForm;
     }

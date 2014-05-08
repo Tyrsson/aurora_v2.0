@@ -1,5 +1,5 @@
 <?php
-if($this->appSettings->enableRegistration) {
+if(Zend_Registry::get('enableRegistration')) {
     if(isset($this->form)) {
     	echo $this->form;
     }

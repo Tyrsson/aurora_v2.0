@@ -98,18 +98,14 @@ class System_Controller_Action_Helper_AdminAction extends Zend_Controller_Action
         if($this->_auth->hasIdentity()) {
             $identity = $this->_auth->getIdentity();
             $role = strtolower($identity->role);
-        }else{
+        } else {
             $role = 'guest';
         }
         if (!$this->_acl->isAllowed($role, $this->_request->controller, $this->_request->action)) {
             if ($role == 'guest') {
-                $controller->redirect('/user');
-                
-                //$this->_request->setControllerName('user');
-                //$this->_request->setActionName('login');
+                $controller->forward('index', 'index', 'user', null);
             } else {
-                //$this->_request->setControllerName('error');
-                //$this->_request->setActionName('noauth');
+                $controller->forward('noauth', 'error', 'default', null);
             }
         }
         else {

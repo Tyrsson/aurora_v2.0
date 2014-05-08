@@ -22,7 +22,7 @@ class Aurora_Model_ContentNodes extends Zend_Db_Table_Abstract
     protected $_rowsetClass = 'Aurora_Model_Rowset_ContentNodes';
     
     protected $_referenceMap = array(
-        'Page' =>
+        'Nodes' =>
             array(
                 'columns' => array('page_id'),
                 'refTableClass' => 'Aurora_Model_Pages',
@@ -32,11 +32,14 @@ class Aurora_Model_ContentNodes extends Zend_Db_Table_Abstract
             )
     );
 
-    public function saveNode($data, $pageId)
+    public function saveNodes($data, $pageId)
     {
-        //Zend_Debug::dump($data);
+        //TODO:: this really belongs in the __set method of this row class
         if(isset($data['id'])) {
             unset($data['id']);
+        }
+        if(isset($data['name'])) {
+            unset($data['name']);
         }
         foreach ($data as $node => $content) {
             $row = $this->createRow();
@@ -47,5 +50,40 @@ class Aurora_Model_ContentNodes extends Zend_Db_Table_Abstract
             $row->save();
         }
 
+    }
+    public function updateNodes($data, $pageRow)
+    {
+        //Zend_Debug::dump($data);
+        
+        try {
+            if(isset($data['id'])) {
+                unset($data['id']);
+            }
+            if(isset($data['name'])) {
+                unset($data['name']);
+            }
+            //Zend_Debug::dump($pageRow);
+            $nodes = $pageRow->findDependentRowset(__CLASS__, 'Nodes');
+            //Zend_Debug::dump($nodes->toArray());
+            foreach ($nodes as $row) {
+                
+                if(in_array($row->node, $data))
+                {
+                    $row->content = $data[$row->node];
+                    $row->save();
+                }
+                //$row->node = $node;
+                //if($data)
+                //$row->content = $content;
+                //$row->save();
+            }
+        } catch (Zend_Exception $e) {
+            echo $e->getMessage();
+        }
+        
+    }
+    public function fetchNode($node, $pageId)
+    {
+        
     }
 }

@@ -10,6 +10,15 @@ class Cms_Form_ManagePage extends Zend_Form
         $id->setDecorators(array('ViewHelper'));
         // add the element to the form
         $this->addElement($id);
+        
+        $parentId = $this->createElement('hidden', 'parent_id');
+        $parentId->setValue(0);
+        // element options
+        $parentId->setDecorators(array('ViewHelper'));
+        // add the element to the form
+        $this->addElement($parentId);
+        
+        
         // create new element
         $name = $this->createElement('text', 'name');
         // element options

@@ -33,6 +33,10 @@ class Aurora_Model_Pages extends Cms_Content_Item_Abstract
         )
     );
     
+    public function init()
+    {
+        $this->nodes = new Aurora_Model_ContentNodes();
+    }
     public function createPage($data, $parentId = 0)
     {
     	
@@ -50,7 +54,7 @@ class Aurora_Model_Pages extends Cms_Content_Item_Abstract
         // now fetch the id of the row you just created and return it
         $id = $this->_db->lastInsertId();
         
-        $nodes->saveNode($data, $id);
+        $this->nodes->saveNodes($data, $id);
             
         return $id;
     }
@@ -65,19 +69,23 @@ class Aurora_Model_Pages extends Cms_Content_Item_Abstract
             $row->parent_id = $data['parent_id'];
             $row->save();
             // unset each of the fields that are set in the pages table
-            unset($data['id']);
-            unset($data['name']);
-            unset($data['parent_id']);
-            // set each of the other fields in the content_nodes table
-            if(count($data) > 0) {
-                $mdlContentNode = new Aurora_Model_ContentNodes();
-                foreach ($data as $key => $value) {
-                    $mdlContentNode->setNode($id, $key, $value);
-                }
-            }
+            
+            $this->nodes->updateNodes($data, $row);
+            
         } else {
             throw new Zend_Exception('Could not open page to update!');
         }
+    }
+    public function fetch($id) 
+    {
+        $row = $this->find($id)->current();
+        $nodes = $row->findDependentRowset($this->_dependentTables[0], 'Nodes');
+        $data = array();
+        foreach($nodes as $node)
+        {
+            $data[$node->node] = $node->content;
+        }
+        return array_merge($row->toArray(), $data);
     }
     public function deletePage($id)
     {

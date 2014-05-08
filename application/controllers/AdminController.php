@@ -10,7 +10,10 @@ require_once 'Zend/Controller/Action.php';
 
 class AdminController extends Zend_Controller_Action
 {
-
+    public function preDispatch()
+    {
+        $this->_helper->adminAction();
+    }
     public function init()
     {
         

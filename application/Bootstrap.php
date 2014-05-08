@@ -14,29 +14,24 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected $_isMobile = false;
     private   $_debug = false;
     
-//     protected function _initRoutes()
-//     {
-//         $front = Zend_Controller_Front::getInstance();
-//         $this->router = $front->getRouter();
+    protected function _initRoutes()
+    {
+        $front = Zend_Controller_Front::getInstance();
+        $this->router = $front->getRouter();
     
-//         $route = new Zend_Controller_Router_Route(
-//                 ':cat/:page',
-//                 array(
-//                         'module'     => 'page',
-//                         'controller' => 'index',
-//                         'action'     => 'index',
-//                         'cat'        => null,
-//                         'page'        => 'Home',
-//                         'format'     => 'html'
-//                 ),
-//                 array(
-//                         'cat'     => '[a-zA-Z0-9_-]+',
-//                         'page'     => '[a-zA-Z0-9_-]+',
-//                         'format'  => '[a-z]+'
-//                 )
-//         );
-//         $this->router->addRoute('landing', $route);
-//     }
+        $route = new Zend_Controller_Router_Route(
+                'admin',
+                array(
+                        'controller' => 'admin',
+                        'action'     => 'index',
+                        'format'     => 'html'
+                ),
+                array(
+                        'format'  => '[a-z]+'
+                )
+        );
+        $this->router->addRoute('admin', $route);
+    }
     protected function _initMysql() {
         $this->bootstrap('db');
         switch (APPLICATION_ENV) {
@@ -118,10 +113,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     }
     protected function _initSettings()
     {
+        $filter = new Zend_Filter_Boolean(array('type' => array(Zend_Filter_Boolean::ALL), 'casting' => false));
+        
         $table = new Zend_Db_Table('settings');
         Zend_Registry::set('appSettings', new stdClass());
         foreach($table->fetchAll() as $settings) {
-            Zend_Registry::set($settings->variable, $settings->value);
+            //Zend_Debug::dump(array($settings->variable => $filter->filter($settings->value)));
+            Zend_Registry::set($settings->variable, $filter->filter($settings->value));
         }
     }
     protected function _initSkin() {

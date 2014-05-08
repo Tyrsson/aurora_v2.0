@@ -58,44 +58,42 @@ class User_Bootstrap extends System_Application_Module_Bootstrap
     public function _initRoutes() {
         $this->getRouter();
         
-//         $adminIndex = new Zend_Controller_Router_Route('admin/user', array(
-//             'module' => 'user',
-//             'controller' => 'admin',
-//             'action' => 'index',
-//             'format' => 'html'
-//         ), array(
-//             'format' => '[a-z]+'
-//         ));
-//         $this->router->addRoute('admin_user', $adminIndex);
+        $route = new Zend_Controller_Router_Route('user', 
+                array(
+                        'module' => 'user',
+                        'controller' => 'index',
+                        'action' => 'index',
+                        'format' => 'html'
+                ), array(
+                        'format' => '[a-z]+'
+                ));
+        $this->router->addRoute('user', $route);
         
+        $route = new Zend_Controller_Router_Route('user/register', 
+                array(
+                        'module' => 'user',
+                        'controller' => 'register',
+                        'action' => 'index',
+                        'format' => 'html'
+                ), array(
+                        'format' => '[a-z]+'
+                ));
+        $this->router->addRoute('register', $route);
         
-//         $route = new Zend_Controller_Router_Route(
-//                 'admin/user/:userId', 
-//                 array(
-//                 'module' => 'user',
-//                 'controller' => 'location',
-//                 'action' => 'list',
-//                 'userId' => null,
-//                 'format' => 'html'
-//         ), array(
-//                 'userId' => '\d+',
-//                 'format' => '[a-z]+'
-//         ));
-//         $this->router->addRoute('admin_list_location', $route);
-        
-//         $route = new Zend_Controller_Router_Route(
-//                 'admin/get/location/:locationId',
-//                 array(
-//                         'module' => 'user',
-//                         'controller' => 'location',
-//                         'action' => 'get',
-//                         'locationId' => 0,
-//                         'format' => 'html'
-//                 ), array(
-//                         'locationId' => '\d+',
-//                         'format' => '[a-z]+'
-//                 ));
-//         $this->router->addRoute('admin_get_location', $route);
+        // /user/register/verify/:uid/:hash
+        $route = new Zend_Controller_Router_Route(
+                'user/verify/:uid/:hash',
+                array(
+                        'module' => 'user',
+                        'controller' => 'register',
+                        'action' => 'verify',
+                        'uid' => 0,
+                        'hash' => 0
+                ), array(
+                        'uid' => '\d+',
+                        'hash' => '\d+'
+                ));
+        $this->router->addRoute('user-verify', $route);
         
         
 //         $route = new Zend_Controller_Router_Route(
