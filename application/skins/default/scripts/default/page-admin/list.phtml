@@ -7,9 +7,9 @@ if($this->pages != null) {
     <th>Links</th>
         <th>Name</th>
     </tr>
-    <?php echo $this->partialLoop('default/partials/page.phtml', $this->pages); ?>
+    <?php echo $this->partialLoop('default/admin-partials/page-row.phtml', $this->pages); ?>
 </table>
 <?php }else{?>
 <p>You do not have any pages yet.</p>
 <?php }?>
-<!-- <p><a href='/page/create'>Create a new page</a></p> -->
+<p><a href='/page-admin/create'>Create a new page</a></p>

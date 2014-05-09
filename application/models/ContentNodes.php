@@ -35,52 +35,37 @@ class Aurora_Model_ContentNodes extends Zend_Db_Table_Abstract
     public function saveNodes($data, $pageId)
     {
         //TODO:: this really belongs in the __set method of this row class
-        if(isset($data['id'])) {
-            unset($data['id']);
-        }
-        if(isset($data['name'])) {
-            unset($data['name']);
-        }
         foreach ($data as $node => $content) {
             $row = $this->createRow();
             $row->node = $node;
             $row->content = $content;
-            //$row->setFromArray(array($node => $content));
             $row->page_id = $pageId;
             $row->save();
         }
-
     }
     public function updateNodes($data, $pageRow)
     {
-        //Zend_Debug::dump($data);
-        
         try {
-            if(isset($data['id'])) {
-                unset($data['id']);
-            }
-            if(isset($data['name'])) {
-                unset($data['name']);
-            }
-            //Zend_Debug::dump($pageRow);
             $nodes = $pageRow->findDependentRowset(__CLASS__, 'Nodes');
-            //Zend_Debug::dump($nodes->toArray());
-            foreach ($nodes as $row) {
-                
-                if(in_array($row->node, $data))
+            $nodeCount = $nodes->count();
+            for ($i = 0; $i < $nodeCount; $i++) {
+                $node = $nodes[$i];
+                foreach($node as $columnName => $columnValue)
                 {
-                    $row->content = $data[$row->node];
-                    $row->save();
+                    if(array_key_exists($columnValue, $data))
+                    {
+                        if($columnValue === 'image' && $data[$columnValue] === null && $data['current_image'] != null) {
+                            $data[$columnValue] = $data['current_image'];
+                        } 
+                        $node->content = $data[$columnValue];
+                        
+                        $node->save();
+                    }
                 }
-                //$row->node = $node;
-                //if($data)
-                //$row->content = $content;
-                //$row->save();
             }
         } catch (Zend_Exception $e) {
             echo $e->getMessage();
         }
-        
     }
     public function fetchNode($node, $pageId)
     {

@@ -7,6 +7,6 @@ class Aurora_Model_Rowset_ContentNodes extends Zend_Db_Table_Rowset_Abstract
 	public function __construct($config)
 	{
 		parent::__construct($config);
-		Zend_Debug::dump(__METHOD__);
+		//Zend_Debug::dump(__METHOD__);
 	}
 }

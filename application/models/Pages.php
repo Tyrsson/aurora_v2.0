@@ -33,6 +33,13 @@ class Aurora_Model_Pages extends Cms_Content_Item_Abstract
         )
     );
     
+    /**
+     * 
+     * @var array incoming colmn names that we do not want passed to the node class
+     */
+    protected $_filterList = array('current_image');
+    
+    
     public function init()
     {
         $this->nodes = new Aurora_Model_ContentNodes();
@@ -47,6 +54,7 @@ class Aurora_Model_Pages extends Cms_Content_Item_Abstract
         $row->parent_id = $parentId;
         
         $row->date_created = time();
+        
         $row->save();
         
         $nodes = new Aurora_Model_ContentNodes();
@@ -54,13 +62,13 @@ class Aurora_Model_Pages extends Cms_Content_Item_Abstract
         // now fetch the id of the row you just created and return it
         $id = $this->_db->lastInsertId();
         
-        $this->nodes->saveNodes($data, $id);
+        $this->nodes->saveNodes($this->filterData($data), $id);
             
         return $id;
     }
     public function updatePage($id, $data)
     {
-    	Zend_Debug::dump(__METHOD__);
+    	//Zend_Debug::dump(__METHOD__);
         // find the page
         $row = $this->find($id)->current();
         if($row) {
@@ -97,5 +105,56 @@ class Aurora_Model_Pages extends Cms_Content_Item_Abstract
         } else {
             throw new Zend_Exception("Delete function failed; could not find page!");
         }
+    }
+    public function fetchParentDropDown()
+    {
+        $noParent = array();
+    
+        $query = $this->select()->from($this->_name, array(
+                'key' => 'id',
+                'value' => 'name'
+        ));
+        $result = $this->fetchAll($query)->toArray();
+        // Zend_Debug::dump($result);
+        array_unshift($result, array(
+        'key' => 0,
+        'value' => 'No Parent'
+                ));
+    
+        return $result;
+    }
+    public function fetchListing($paginated = false, $includeHome = false, $page = 1, $perPage = 10)
+    {
+        $q = $this->select();
+        
+        if(!$includeHome)
+        {
+            $q->where('name != ?', 'home')->orWhere('name != ?', 'Home');
+            
+        } 
+        
+        $q->order('name');
+        
+        if($paginated) {
+            $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_DbTableSelect($q));
+            $paginator->setItemCountPerPage($perPage);
+            $paginator->setCurrentPageNumber($page);
+            return $paginator;
+        } else {
+            return $this->fetchAll($q);
+        }
+    }
+    public function filterData(array $data)
+    {
+        $columns = $this->info('cols');
+        $filter = array_merge($columns, $this->_filterList);
+        foreach($filter as $column)
+        {
+            if(array_key_exists($column, $data))
+            {
+                unset($data[$column]);
+            }
+        }
+        return $data;
     }
 }

@@ -42,6 +42,7 @@ class System_Controller_Action_Helper_AdminAction extends Zend_Controller_Action
             // add the resources
             $this->_acl->add(new Zend_Acl_Resource('index'));
             $this->_acl->add(new Zend_Acl_Resource('admin'));
+            $this->_acl->add(new Zend_Acl_Resource('page-admin'));
             $this->_acl->add(new Zend_Acl_Resource('error'));
             $this->_acl->add(new Zend_Acl_Resource('page'));
             $this->_acl->add(new Zend_Acl_Resource('menu'));
@@ -51,7 +52,7 @@ class System_Controller_Action_Helper_AdminAction extends Zend_Controller_Action
             // set up the access rules
             $this->_acl->allow(null, array('index', 'error'));
             // a guest can only read content and login
-            $this->_acl->allow('guest', 'page', array('index', 'open', 'list'));
+            $this->_acl->allow('guest', 'page-admin', array('index', 'open', 'list'));
             $this->_acl->allow('guest', 'menu', array('render'));
             $this->_acl->allow('guest', 'user', array('login'));
             // cms users can also work with content

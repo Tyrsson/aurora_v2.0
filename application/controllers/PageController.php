@@ -18,95 +18,23 @@ class PageController extends Zend_Controller_Action
     public function indexAction ()
     {
         // TODO Auto-generated PageController::indexAction() default action
-    }
-    public function createAction()
-    {
-        $this->_helper->adminAction();
-        $pageForm = new Cms_Form_ManagePage();
-        $pageForm->setAction('/page/create');
         
-        if($this->_request->isPost()) {
-            if($pageForm->isValid($this->_request->getPost())) {
-                
-                $data = $pageForm->getValues();
-                
-                $page = new Aurora_Model_Pages();
-                $page->createPage($data);
-                
-                // create a new page item
-//                 $itemPage = new Cms_Content_Item_Page();
-//                 $itemPage->name = $data['name'];
-//                 $itemPage->headline = $data['headline'];
-//                 $itemPage->description = $data['description'];
-//                 $itemPage->content = $data['content'];
-//                 $itemPage->image = $data['image'];
-                // upload the image
-//                 if($pageForm->image->isUploaded()){
-//                     $pageForm->image->receive();
-//                     $itemPage->image = '/images/upload/' .
-//                             basename($pageForm->image->getFileName());
-//                 }
-                // save the content item
-               // try {
-//                     $itemPage->save();
-                    return $this->_forward('list');
-                //} catch (Exception $e) {
-                    //echo $e->getMessage();
-                //}
-            } 
-        }
-        
-        $this->view->form = $pageForm;
     }
+
     public function listAction()
     {
         $pageModel = new Aurora_Model_Pages();
         // fetch all of the current pages
-        $select = $pageModel->select();
-        $select->order('name');
-        $currentPages = $pageModel->fetchAll($select);
+//         $select = $pageModel->select();
+//         $select->order('name');
+//         $currentPages = $pageModel->fetchAll($select);
+        $currentPages = $pageModel->fetchListing(true);
+        
         if($currentPages->count() > 0) {
             $this->view->pages = $currentPages;
         }else{
             $this->view->pages = null;
         }
     }
-    public function editAction()
-    {
-        $this->_helper->adminAction();
-        $id = $this->_request->getParam('id');
-        $model = new Aurora_Model_Pages();
-        $pageForm = new Cms_Form_ManagePage();
-        $pageForm->setAction('/page/edit');
-        if($this->_request->isPost()) {
-            if($pageForm->isValid($this->_request->getPost())) {
-                
-                $data = $pageForm->getValues();
-                //Zend_Debug::dump($data);
 
-                // save the content item
-                $model->updatePage($id, $data);
-                
-                return $this->forward('list');
-            }
-        }
-        else {
-            $page = $model->fetch($id);
-            if(isset($page['image']) && $page['image'] != null)
-            {
-                // create the image preview
-                $imagePreview = $pageForm->createElement('image', 'image_preview');
-                // element options
-                $imagePreview->setLabel('Preview Image: ');
-                $imagePreview->setAttrib('style', 'width:200px;height:auto;');
-                // add the element to the form
-                $imagePreview->setOrder(4);
-                $imagePreview->setImage('/modules/cms/content/'.$page['image']);
-                $pageForm->addElement($imagePreview);
-            }
-        	
-        	$pageForm->populate($page);
-        }
-        $this->view->form = $pageForm;
-    }
 }

@@ -18,6 +18,13 @@ class Cms_Form_ManagePage extends Zend_Form
         // add the element to the form
         $this->addElement($parentId);
         
+        $currentImage = $this->createElement('hidden', 'current_image');
+
+        // element options
+        $currentImage->setDecorators(array('ViewHelper'));
+        // add the element to the form
+        $this->addElement($currentImage);
+        
         
         // create new element
         $name = $this->createElement('text', 'name');

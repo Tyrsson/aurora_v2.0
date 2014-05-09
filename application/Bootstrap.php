@@ -48,6 +48,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         }
         // echo __METHOD__;
     }
+    protected function _initSettings()
+    {
+        $filter = new Zend_Filter_Boolean(array('type' => array(Zend_Filter_Boolean::ALL), 'casting' => false));
+    
+        $table = new Zend_Db_Table('settings');
+        Zend_Registry::set('appSettings', new stdClass());
+        foreach($table->fetchAll() as $settings) {
+            //Zend_Debug::dump(array($settings->variable => $filter->filter($settings->value)));
+            Zend_Registry::set($settings->variable, $filter->filter($settings->value));
+        }
+    }
     /**
      * Setup the logging
      */
@@ -90,6 +101,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected function _initSession() {
         //if('production' == $this->getEnvironment()) {
         //$this->_logger->info('Bootstrap ' . __METHOD__);
+        $length = Zend_Registry::get('sessionLength');
+        
         $this->sessionConfig = array(
                 'name'           => 'session',
                 'primary'        => 'id',
@@ -100,7 +113,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         Zend_Session::setOptions(array(
         //'cookie_secure' => true, //only if using SSL
         //'use_only_cookies' => true,
-        'gc_maxlifetime' => ( isset($this->appSettings->sessionLength) ) ? (int) $this->appSettings->sessionLength : 15 * 60, // use setting or fall back to 15 minutes
+        'gc_maxlifetime' => ( isset($length) ) ? (int) $length : 15 * 60, // use setting or fall back to 15 minutes
         'cookie_httponly' => true
         )
         );
@@ -111,17 +124,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         //Zend_Session::regenerateId();
         // echo __METHOD__;
     }
-    protected function _initSettings()
-    {
-        $filter = new Zend_Filter_Boolean(array('type' => array(Zend_Filter_Boolean::ALL), 'casting' => false));
-        
-        $table = new Zend_Db_Table('settings');
-        Zend_Registry::set('appSettings', new stdClass());
-        foreach($table->fetchAll() as $settings) {
-            //Zend_Debug::dump(array($settings->variable => $filter->filter($settings->value)));
-            Zend_Registry::set($settings->variable, $filter->filter($settings->value));
-        }
-    }
+
     protected function _initSkin() {
         //Zend_Debug::dump($this->getAppNamespace());
         //$this->_logger->info('Bootstrap ' . __METHOD__);
