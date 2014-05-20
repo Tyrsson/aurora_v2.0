@@ -2,8 +2,8 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-    const DEFAULT_SKIN_NAME = 'default';
-    const MOBILE_SKIN_NAME  = 'jquery.mobile';
+    const DEFAULT_SKIN_NAME = 'desktop';
+    const MOBILE_SKIN_NAME  = 'mobile';
     
     protected $db;
     protected $sessionConfig;
@@ -143,13 +143,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $viewRenderer = new Zend_Controller_Action_Helper_ViewRenderer($view);
 
         //TODO: Replace this with correct properties once db has been fully reintroduced 
-        //$skin = new Admin_Model_SkinSettings();
-        //$row = $skin->fetchCurrent();
-        $row = new stdClass();
+        $skin = new Aurora_Model_SkinSettings();
+        $row = $skin->fetchCurrent();
+        //$row = new stdClass();
         $this->appSettings = new stdClass();
         
         $mobileSkinName = Zend_Registry::get('mobileSkinName');
-        $row->skinName = 'default';
         
         if($device instanceof Zend_Http_UserAgent_Mobile && Zend_Registry::get('enableMobileSupport')) {
             

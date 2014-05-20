@@ -1,0 +1,19 @@
+@import url(unsemantic-grid-responsive.css);
+@import url(sticky.css);
+
+* { 
+	margin: 0;
+}
+
+.align-center {
+	text-align: center;
+}
+
+.wrapper > header, .grid-container > footer {
+	background-color: gray;
+}
+
+.grid-container {
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+}
