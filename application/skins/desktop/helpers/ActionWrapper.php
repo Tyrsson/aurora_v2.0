@@ -11,7 +11,7 @@ require_once 'System/View/Helper/Abstract.php';
  *
  * @uses viewHelper Default_View_Helper
  */
-class Default_View_Helper_ActionWrapper extends Zend_View_Helper_HtmlElement
+class Desktop_View_Helper_ActionWrapper extends Zend_View_Helper_HtmlElement
 {
     /**
      */

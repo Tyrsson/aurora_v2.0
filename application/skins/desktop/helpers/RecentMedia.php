@@ -11,7 +11,7 @@ require_once 'Zend/View/Interface.php';
  *
  * @uses viewHelper Media_View_Helper
  */
-class Default_View_Helper_RecentMedia extends System_View_Helper_Abstract
+class Desktop_View_Helper_RecentMedia extends System_View_Helper_Abstract
 {
     /**
      */
