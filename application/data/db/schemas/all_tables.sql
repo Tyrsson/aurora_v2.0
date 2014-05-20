@@ -1,18 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 3.5.7
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: May 08, 2014 at 05:36 PM
--- Server version: 5.5.29
--- PHP Version: 5.3.20
-
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
---
--- Database: `aurora_2_0_0`
---
 
 -- --------------------------------------------------------
 
