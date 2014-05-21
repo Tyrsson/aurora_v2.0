@@ -10,9 +10,12 @@ require_once 'Zend/Controller/Action.php';
 
 class PageAdminController extends Zend_Controller_Action
 {
+	public $isAdmin = true;
+	
     public function preDispatch()
     {
-        $this->_helper->adminAction();
+        $this->_helper->actionContext();
+       // Zend_Debug::dump($this->_request->controller);
     }
     /**
      * The default action - show the home page
@@ -36,7 +39,7 @@ class PageAdminController extends Zend_Controller_Action
     }
     public function createAction()
     {
-        $this->_helper->adminAction();
+        //$this->_helper->adminAction();
         $pageForm = new Cms_Form_ManagePage();
         //$pageForm->setAction('/page/create');
     
@@ -59,7 +62,7 @@ class PageAdminController extends Zend_Controller_Action
     }
     public function editAction()
     {
-        $this->_helper->adminAction();
+
         $id = $this->_request->getParam('id');
         $model = new Aurora_Model_Pages();
         $pageForm = new Cms_Form_ManagePage();
@@ -98,7 +101,6 @@ class PageAdminController extends Zend_Controller_Action
     }
     public function deleteAction()
     {
-        $this->_helper->adminAction();
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         $id = $this->_request->id;

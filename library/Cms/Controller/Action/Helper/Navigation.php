@@ -7,7 +7,7 @@
 require_once 'Zend/Loader/PluginLoader.php';
 require_once 'Zend/Controller/Action/Helper/Abstract.php';
 
-class System_Controller_Action_Helper_Navigation extends Zend_Controller_Action_Helper_Abstract
+class Cms_Controller_Action_Helper_Navigation extends Zend_Controller_Action_Helper_Abstract
 {
 	protected $_container;
 	public $appSettings;
@@ -15,7 +15,7 @@ class System_Controller_Action_Helper_Navigation extends Zend_Controller_Action_
 	// constructor, set navigation container
 	public function __construct(Zend_Navigation $container = null)
 	{
-	    $this->appSettings = Zend_Registry::get('appSettings');
+	    //$this->appSettings = Zend_Registry::get('appSettings');
 		if (null !== $container)
 		{
 			$this->_container = $container;
@@ -31,22 +31,22 @@ class System_Controller_Action_Helper_Navigation extends Zend_Controller_Action_
 	    {
 
 	        try {
-	            $this->conManager = new System_Db_Categories();
-	            $this->conManager->getTree()->toNavigation('Pages', false);
-	            $this->_container = Zend_Registry::get ( 'Zend_Navigation' );
+// 	            $this->conManager = new System_Db_Categories();
+// 	            $this->conManager->getTree()->toNavigation('Pages', false);
+ 	            $this->_container = Zend_Registry::get ( 'Zend_Navigation' );
 	            
 	            /*
             	 * for this to work as expected
             	 * the <setting>$value</setting> must match exactly what is in the db
             	 * also the <hassetting>true</hassetting> must also be in the config
             	 */
-            	$pagesToCheck = $this->_container->findAllBy('hassetting', true);
-            	foreach ($pagesToCheck as $filteredPage) {
-            	    if(property_exists($this->appSettings, "$filteredPage->setting"))
-                	{
-                	   $filteredPage->visible = $this->appSettings->{$filteredPage->setting};
-                	}
-                }
+//             	$pagesToCheck = $this->_container->findAllBy('hassetting', true);
+//             	foreach ($pagesToCheck as $filteredPage) {
+//             	    if(property_exists($this->appSettings, "$filteredPage->setting"))
+//                 	{
+//                 	   $filteredPage->visible = $this->appSettings->{$filteredPage->setting};
+//                 	}
+//                 }
 
 	        } catch (Exception $e) {
 	            echo $e->getMessage();
@@ -57,7 +57,7 @@ class System_Controller_Action_Helper_Navigation extends Zend_Controller_Action_
 	    {
 	        throw new RuntimeException ( 'Navigation container unavailable' );
 	    }
-	    $this->_container->findBy ( 'uri', $this->getRequest ()->getRequestUri () )->active = true;
+	    @$this->_container->findBy ( 'uri', $this->getRequest ()->getRequestUri () )->active = true;
 	    return $this->_container;
 	    
 	    // temp fix to add php 5.4 support

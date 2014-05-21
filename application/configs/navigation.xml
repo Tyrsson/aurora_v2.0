@@ -6,15 +6,25 @@
 			<uri>/</uri>
 			<!-- <visible>false</visible> -->
 		</home>
+		<admin>
+			<label>Admin</label>
+			<uri>/admin</uri>
+			<!-- <resource>page-admin</resource>
+			<privilege>list</privilege> -->
+			<visible>true</visible>
+		</admin>
 	</nav>
 	<adminnav>
-		<adminhome>
-			<label>Admin</label>
-			<uri>/admin/index</uri>
-			<resource>admin:area</resource>
-			<privilege>view</privilege>
-			<visible>false</visible>
-			<order>999</order>
-		</adminhome>
+		<home>
+			<label>Return Home</label>
+			<uri>/</uri>
+			<!-- <visible>false</visible> -->
+		</home>
+		<admin-pages>
+			<label>Admin Pages</label>
+			<uri>/page-admin/list</uri>
+			<resource>content</resource>
+			<privilege>delete</privilege>
+		</admin-pages>
 	</adminnav>
 </config>

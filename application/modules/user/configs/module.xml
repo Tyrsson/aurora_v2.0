@@ -3,25 +3,25 @@
 		<register>
 			<label>Register</label>
 			<uri>/user/register</uri>
-			<resource>user</resource>
-			<privilege>user.register</privilege>
+			<resource>register</resource>
+			<privilege>view</privilege>
 			<hassetting>true</hassetting>
 			<setting>enableRegistration</setting>
 		</register>
 		<login>
 			<label>Login</label>
 			<uri>/user/login</uri>
-			<resource>user</resource>
-			<privilege>user.login</privilege>
+			<resource>login</resource>
+			<privilege>view</privilege>
 			<class>settings-controlled</class>
 			<hassetting>true</hassetting>
 			<setting>enableMainMenuLogin</setting>
 		</login>
 	    <logout>
 			<label>Logout</label>
-			<uri>/user/login/logout</uri>
-			<resource>user</resource>
-			<privilege>user.logout</privilege>
+			<uri>/user/index/logout</uri>
+			<resource>logout</resource>
+			<privilege>view</privilege>
 		</logout>
 		<account>
 			<label>Account</label>

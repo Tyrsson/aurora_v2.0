@@ -209,7 +209,43 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected function _initActionHelpers()
     {
         //$this->_logger->info('Bootstrap ' . __METHOD__);
-        Zend_Controller_Action_HelperBroker::addHelper(new System_Controller_Action_Helper_AdminAction());
+    	Zend_Controller_Action_HelperBroker::addHelper(new Cms_Controller_Action_Helper_ActionContext());
+    	
+        //Zend_Controller_Action_HelperBroker::addHelper(new Cms_Controller_Action_Helper_AdminContext());
+    }
+    protected function _initNavigation() {
+    	/**
+    	 * This will be changing soon to use a module based navigation
+    	 */
+    	// Read navigation XML and initialize container
+    	$navconfig = new Zend_Config_Xml(APPLICATION_PATH . '/configs/navigation.xml', 'nav');
+    	$container = new Zend_Navigation($navconfig);
+    	// Register navigation container
+    	$registry = Zend_Registry::getInstance();
+    	$registry->set('Zend_Navigation', $container);
+    	// Add action helper
+    	Zend_Controller_Action_HelperBroker::addHelper(new Cms_Controller_Action_Helper_Navigation());
+    	// echo __METHOD__;
+    	
+    }
+    protected function _initAdminNavigation() {
+    	//$this->_logger->info('Bootstrap ' . __METHOD__);
+    	/**
+    	* This will be changing soon to use a module based navigation
+    	*/
+    	// Read navigation XML and initialize container
+    	$adminnavconfig = new Zend_Config_Xml(APPLICATION_PATH . '/configs/navigation.xml', 'adminnav');
+    	$admincontainer = new Zend_Navigation($adminnavconfig);
+    	// Register navigation container
+    	$registry = Zend_Registry::getInstance();
+    	$registry->set('Admin_Navigation', $admincontainer);
+    	// Add action helper
+        	Zend_Controller_Action_HelperBroker::addHelper(new Cms_Controller_Action_Helper_AdminNavigation());
+        	// echo __METHOD__;
+    }
+    protected function _initCmsAcl()
+    {
+    	Zend_View_Helper_Navigation_HelperAbstract::setDefaultAcl(new Cms_Acl());
     }
 }
 

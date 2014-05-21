@@ -30,10 +30,6 @@ class System_Controller_Action_Helper_AdminNavigation extends Zend_Controller_Ac
     {
         if (null === $this->_adminContainer) {
             $this->_adminContainer = Zend_Registry::get('Admin_Navigation');
-            if ($this->getRequest()->getControllerName() != 'admin.install') {
-                //self::getModuleSettingsPages();
-            }
-            // self::getPageModuleAdminPage();
         }
         if (null === $this->_adminContainer) {
             throw new RuntimeException('Navigation container unavailable');

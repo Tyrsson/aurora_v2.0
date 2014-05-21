@@ -9,6 +9,8 @@
  * @subpackage User
  */
 require_once 'System/Db/Table/Abstract.php';
+require_once APPLICATION_PATH . '/modules/user/models/Row/User.php';
+require_once APPLICATION_PATH . '/modules/user/models/Rowset/Users.php';
 
 class User_Model_User extends System_Db_Table_Abstract
 {

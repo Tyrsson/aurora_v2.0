@@ -12,7 +12,7 @@ class AdminController extends Zend_Controller_Action
 {
     public function preDispatch()
     {
-        $this->_helper->adminAction();
+        $this->_helper->actionContext();
     }
     public function init()
     {

@@ -11,7 +11,10 @@ require_once 'Zend/Controller/Action.php';
 
 class PageController extends Zend_Controller_Action
 {
-
+	public function preDispatch()
+	{
+		$this->_helper->actionContext();
+	}
     /**
      * The default action - show the home page
      */
