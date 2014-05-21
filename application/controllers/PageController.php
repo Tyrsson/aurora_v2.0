@@ -39,5 +39,8 @@ class PageController extends Zend_Controller_Action
             $this->view->pages = null;
         }
     }
-
+    public function viewAction()
+    {
+        
+    }
 }

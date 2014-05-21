@@ -4,16 +4,53 @@
 * { 
 	margin: 0;
 }
-
-.align-center {
-	text-align: center;
+body {
+	font-size: 10px;
 }
-
-.wrapper > header, .grid-container > footer {
-	background-color: gray;
-}
-
 .grid-container {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+.wrapper > header, .grid-container > footer {
+	background-color: #CCC;
+}
+.wrapper > header {
+    height: 6em;
+    border-radius: 0 0 0.5em 0.5em;
+    background-clip: padding-box;
+}
+.grid-container > footer {
+	border-radius: 0.5em 0.5em 0 0;
+    background-clip: padding-box;
+}
+nav > ul.navigation {
+	list-style:none;
+	font-size:1.5em;
+}
+nav > ul.navigation li {
+	float:left;
+	margin: 0 0 0 0.2em;
 	border-left: 1px solid black;
 	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	border-radius: 0 0 0.25em 0.25em;
 }
+nav > ul.navigation li a:link, nav > ul.navigation li a:visited, nav > ul.navigation li a:hover
+{
+	text-decoration:none;
+	padding:1em;
+}
+nav > ul.navigation li a:link, nav > ul.navigation li a:visited {
+	color:black;
+}
+/** 
+We generally want the hover and active states to be the same
+ **/
+nav > ul.navigation li a:hover, nav > ul.navigation li.active a {
+	color: white;
+}
+
+.align-center {
+    text-align: center;
+}
+
