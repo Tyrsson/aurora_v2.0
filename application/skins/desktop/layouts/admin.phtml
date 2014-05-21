@@ -16,12 +16,18 @@
     <div class="grid-container">
         <div class="wrapper">
             <header class="grid-100">
-                <h1><?php echo Zend_Registry::get('siteName'); ?></h1>
-                <nav>
-                <?php 
-					echo $this->navigation()->menu()->renderMenu(Zend_Registry::get('Admin_Navigation'));
-				?>
+                <nav class="grid-80">
+                    <?php 
+		              try {
+			             echo $this->navigation()->menu()->renderMenu(Zend_Registry::get('Admin_Navigation'));
+		              } catch (Zend_Exception $e) {
+                        //echo $e->getMessage();
+		              }
+			        ?>
                 </nav>
+                <div class="grid-20">
+                    <h1><?php echo Zend_Registry::get('siteName'); ?></h1>
+                </div>
             </header>
             <div class="grid-100">
                 <?php 
