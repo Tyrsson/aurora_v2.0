@@ -47,7 +47,9 @@ class PageAdminController extends Zend_Controller_Action
             if($pageForm->isValid($this->_request->getPost())) {
     
                 $data = $pageForm->getValues();
-    
+                $filter = new Zend_Filter_Word_SeparatorToDash();
+                $data['uri'] = $filter->filter($data['name']);
+                
                 $page = new Aurora_Model_Pages();
                 $page->createPage($data);
     
@@ -62,16 +64,16 @@ class PageAdminController extends Zend_Controller_Action
     }
     public function editAction()
     {
-
         $id = $this->_request->getParam('id');
         $model = new Aurora_Model_Pages();
         $pageForm = new Cms_Form_ManagePage();
-        //$pageForm->setAction('/page/edit');
         if($this->_request->isPost()) {
             if($pageForm->isValid($this->_request->getPost())) {
     
                 $data = $pageForm->getValues();
-                //Zend_Debug::dump($data);
+                
+                $filter = new Zend_Filter_Word_SeparatorToDash();
+                $data['uri'] = $filter->filter($data['name']);
     
                 // save the content item
                 $model->updatePage($id, $data);

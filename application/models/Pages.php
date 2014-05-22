@@ -101,6 +101,12 @@ class Aurora_Model_Pages extends Cms_Content_Item_Abstract
         }
         return array_merge($row->toArray(), $data);
     }
+    public function fetchByUri($uri)
+    {
+        $q = $this->select()->where('uri = ?', $uri);
+        $row = $this->fetchRow($q);
+        return $row;
+    }
     public function deletePage($id)
     {
         // find the row that matches the id

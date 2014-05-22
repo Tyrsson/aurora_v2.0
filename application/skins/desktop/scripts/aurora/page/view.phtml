@@ -1,30 +1,21 @@
-<div class="grid-90 page-body">
-    <h3><?php echo $this->name; ?></h3>
-    <?php 
-    
-    $nodes = $this->page($this->page)->getNodes();
-    
-    foreach ($nodes as $node) {
-
-		if($node->node_type === 'metaTitle') {
-			$this->headTitle($node->content);
-		}
-		elseif($node->node_type === 'metaDescription') {
-			$this->headMeta()->appendName('description', $node->content);
-		}
-		else {
-			?>
-			<div class="grid-100">
-				<?php 
-					echo $node->content;
-				?>
-			</div>
-			<div class="clear"></div>
-		<?php 
-		}
-    ?>
-    	
-    <?php 
-    }
-    ?>
+<?php 
+// inject the page into the helper so we can let it pull the node list
+$this->page($this->page);
+?>
+<div class="grid-90">
+    <div class="grid-100">
+        <h3>
+            <?php echo $this->page()->getPageProperty('name'); ?>
+        </h3>
+    </div>
+    <div class="clear"></div>
+    <div class="grid-20">
+        <img class="page-image" src="<?php echo $this->baseUrl('/') . 'modules/cms/content/'.$this->page()->getPageProperty('image'); ?>" />
+    </div>
+    <div class="grid-80">
+        <p>
+            <?php echo $this->page()->getPageProperty('description'); ?>
+        </p>
+    </div>
 </div>
+<div class="clear"></div>

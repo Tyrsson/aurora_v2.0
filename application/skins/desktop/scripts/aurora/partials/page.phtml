@@ -5,7 +5,7 @@ $this->page($this->page);
 <div class="grid-90 featured-content-item">
     <div class="grid-100">
         <h3>
-            <?php echo $this->page()->getPageProperty('name'); ?>
+            <a href="<?php echo $this->baseUrl('/') . 'page/view/uri/' .$this->page()->getPageProperty('uri'); ?>"><?php echo $this->page()->getPageProperty('name'); ?></a>
         </h3>
     </div>
     <div class="clear"></div>
@@ -17,7 +17,6 @@ $this->page($this->page);
             <?php echo $this->page()->getPageProperty('description'); ?>
         </p>
     </div>
-
 </div>
 <div class="clear"></div>
 

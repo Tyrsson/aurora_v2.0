@@ -1,15 +1,14 @@
 <div class="grid-100">
 	<h2 class="featured-main-heading">Featured Content</h2>
 	<?php
-		if($this->pages instanceof Zend_Paginator) {
-		    
+		if($this->pages instanceof Zend_Paginator) 
+		{
 		     $this->partialLoop()->setObjectKey('page');
 	 	     echo $this->partialLoop('aurora/partials/page.phtml', $this->pages); 
 	
 	         if($this->pages->count() > 1) {
 	             echo $this->paginationControl($this->pages, 'Sliding', 'partials/listing-pagination-control.phtml', array('page' => $this->currentPageNumber));
 	         }
-	         
 	    }
 	    else {
 	?>	

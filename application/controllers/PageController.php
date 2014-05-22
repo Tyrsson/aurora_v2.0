@@ -22,16 +22,13 @@ class PageController extends Zend_Controller_Action
     /**
      * The default action - show the home page
      */
-    public function indexAction ()
+    public function indexAction()
     {
         // TODO Auto-generated PageController::indexAction() default action
         
     }
-
     public function listAction()
     {
-        
-        
         $pageModel = new Aurora_Model_Pages();
 
         $currentPages = $pageModel->fetchListing(true);
@@ -47,7 +44,11 @@ class PageController extends Zend_Controller_Action
     public function viewAction()
     {
         if(isset($this->_request->uri)) {
-        	Zend_Debug::dump($this->_request->uri);
+        	$model = new Aurora_Model_Pages();
+        	$this->view->page = $model->fetchByUri($this->_request->uri);
+        }
+        else {
+            throw new Zend_Controller_Action_Exception(Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION, 404);
         }
     }
 }
