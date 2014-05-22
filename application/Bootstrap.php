@@ -185,6 +185,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->addHelperPath('Zend/View/Helper', 'Zend_View_Helper');
         
         $view->addHelperPath("System/View/Helper/", "System_View_Helper");
+        
+        $view->addHelperPath("Cms/View/Helper/", "Cms_View_Helper");
 
         $view->addHelperPath("System/Dojo/View/Helper/", "System_Dojo_View_Helper");
 

@@ -14,6 +14,8 @@ class PageController extends Zend_Controller_Action
 	public function preDispatch()
 	{
 		$this->_helper->actionContext();
+		$this->acl = new Cms_Acl();
+		$this->view->acl = $this->acl;
 	}
     /**
      * The default action - show the home page
@@ -27,10 +29,7 @@ class PageController extends Zend_Controller_Action
     public function listAction()
     {
         $pageModel = new Aurora_Model_Pages();
-        // fetch all of the current pages
-//         $select = $pageModel->select();
-//         $select->order('name');
-//         $currentPages = $pageModel->fetchAll($select);
+
         $currentPages = $pageModel->fetchListing(true);
         
         if($currentPages->count() > 0) {
@@ -41,6 +40,8 @@ class PageController extends Zend_Controller_Action
     }
     public function viewAction()
     {
-        
+        if(isset($this->_request->uri)) {
+        	Zend_Debug::dump($this->_request->uri);
+        }
     }
 }

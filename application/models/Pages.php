@@ -84,9 +84,15 @@ class Aurora_Model_Pages extends Cms_Content_Item_Abstract
             throw new Zend_Exception('Could not open page to update!');
         }
     }
-    public function fetch($id) 
+    public function fetch($id = null, $uri = null) 
     {
-        $row = $this->find($id)->current();
+    	if($id != null) {
+    		$row = $this->find($id)->current();
+    	}
+        if($uri != null) {
+        	$q = $this->select()->where('uri = ?', $uri);
+        	$row = $this->fetchRow($q);
+        }
         $nodes = $row->findDependentRowset($this->_dependentTables[0], 'Nodes');
         $data = array();
         foreach($nodes as $node)
@@ -130,7 +136,6 @@ class Aurora_Model_Pages extends Cms_Content_Item_Abstract
         if(!$includeHome)
         {
             $q->where('name != ?', 'home')->orWhere('name != ?', 'Home');
-            
         } 
         
         $q->order('name');

@@ -1,3 +1,18 @@
+-- phpMyAdmin SQL Dump
+-- version 4.1.9
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: May 22, 2014 at 07:21 AM
+-- Server version: 5.6.16
+-- PHP Version: 5.4.24
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `aurora_2_0_0`
+--
 
 -- --------------------------------------------------------
 
@@ -11,18 +26,24 @@ CREATE TABLE IF NOT EXISTS `content_nodes` (
   `page_id` int(11) DEFAULT NULL,
   `node` varchar(50) DEFAULT NULL,
   `content` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+  `node_type` set('metaTitle','metaDescription','text','textarea','image','heading','subheading','footer') DEFAULT NULL,
+  `order` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `order` (`order`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `content_nodes`
 --
 
-INSERT INTO `content_nodes` (`id`, `page_id`, `node`, `content`) VALUES
-(3, 1, 'headline', 'test one headline'),
-(4, 1, 'image', 'Document.png'),
-(5, 1, 'description', 'test one description'),
-(6, 1, 'content', 'test one content');
+INSERT INTO `content_nodes` (`id`, `page_id`, `node`, `content`, `node_type`, `order`) VALUES
+(1, 1, 'headline', 'test one headline', 'text', 3),
+(2, 1, 'image', 'Document.png', 'image', 6),
+(3, 1, 'description', 'test one description', 'text', 4),
+(4, 1, 'content', 'test one content', 'textarea', 5),
+(5, 1, 'title', 'Meta Title example', 'metaTitle', 1),
+(6, 1, 'seoDescription', 'This is the description that will show in the meta data for the page.', 'metaDescription', 2),
+(7, 1, 'pageFooter', 'This is an example footer for the page.', 'footer', 7);
 
 -- --------------------------------------------------------
 
@@ -76,21 +97,23 @@ DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `roleId` int(11) NOT NULL AUTO_INCREMENT,
   `role` varchar(255) NOT NULL,
-  `inheritsFrom` varchar(255) NOT NULL,
+  `parentRole` varchar(255) DEFAULT NULL,
+  `isDefaultRole` tinyint(1) NOT NULL DEFAULT '0',
   `publicName` varchar(100) NOT NULL,
-  PRIMARY KEY (`roleId`)
+  PRIMARY KEY (`roleId`),
+  KEY `isDefaultRole` (`isDefaultRole`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `roles`
 --
 
-INSERT INTO `roles` (`roleId`, `role`, `inheritsFrom`, `publicName`) VALUES
-(1, 'admin', 'jradmin', ''),
-(2, 'jradmin', 'moderator', ''),
-(3, 'moderator', 'user', ''),
-(4, 'user', 'guest', ''),
-(5, 'guest', 'none', '');
+INSERT INTO `roles` (`roleId`, `role`, `parentRole`, `isDefaultRole`, `publicName`) VALUES
+(1, 'admin', 'jradmin', 0, ''),
+(2, 'jradmin', 'moderator', 0, ''),
+(3, 'moderator', 'user', 0, ''),
+(4, 'user', 'guest', 1, ''),
+(5, 'guest', NULL, 0, '');
 
 -- --------------------------------------------------------
 
@@ -112,7 +135,9 @@ CREATE TABLE IF NOT EXISTS `session` (
 --
 
 INSERT INTO `session` (`id`, `modified`, `lifetime`, `data`) VALUES
-('b3ad7959d8529b8340126eaf070198d2', 1399588307, 900, '.Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14|a:1:{s:7:"storage";s:3127:"a:6:{s:12:"browser_type";s:7:"desktop";s:6:"config";a:3:{s:23:"identification_sequence";s:14:"mobile,desktop";s:7:"storage";a:1:{s:7:"adapter";s:7:"Session";}s:6:"mobile";a:1:{s:8:"features";a:1:{s:9:"classname";s:45:"Zend_Http_UserAgent_Features_Adapter_Browscap";}}}s:12:"device_class";s:27:"Zend_Http_UserAgent_Desktop";s:6:"device";s:2544:"a:6:{s:10:"_aFeatures";a:28:{s:21:"browser_compatibility";s:6:"Safari";s:14:"browser_engine";s:11:"AppleWebKit";s:12:"browser_name";s:6:"Safari";s:13:"browser_token";s:21:"Intel Mac OS X 10_9_2";s:15:"browser_version";s:5:"7.0.3";s:7:"comment";a:2:{s:4:"full";s:32:"Macintosh; Intel Mac OS X 10_9_2";s:6:"detail";a:2:{i:0;s:9:"Macintosh";i:1;s:22:" Intel Mac OS X 10_9_2";}}s:18:"compatibility_flag";s:9:"Macintosh";s:15:"device_os_token";s:9:"Macintosh";s:6:"others";a:2:{s:4:"full";s:72:"AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14";s:6:"detail";a:3:{i:0;a:3:{i:0;s:41:"AppleWebKit/537.75.14 (KHTML, like Gecko)";i:1;s:11:"AppleWebKit";i:2;s:9:"537.75.14";}i:1;a:3:{i:0;s:13:"Version/7.0.3";i:1;s:7:"Version";i:2;s:5:"7.0.3";}i:2;a:3:{i:0;s:16:"Safari/537.75.14";i:1;s:6:"Safari";i:2;s:9:"537.75.14";}}}s:12:"product_name";s:7:"Mozilla";s:15:"product_version";s:3:"5.0";s:10:"user_agent";s:11:"Mozilla/5.0";s:18:"is_wireless_device";b:0;s:9:"is_mobile";b:0;s:10:"is_desktop";b:1;s:9:"is_tablet";b:0;s:6:"is_bot";b:0;s:8:"is_email";b:0;s:7:"is_text";b:0;s:25:"device_claims_web_support";b:0;s:9:"client_ip";s:9:"127.0.0.1";s:11:"php_version";s:6:"5.3.20";s:9:"server_os";s:6:"apache";s:17:"server_os_version";i:1;s:18:"server_http_accept";s:63:"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";s:27:"server_http_accept_language";s:5:"en-us";s:9:"server_ip";s:9:"127.0.0.1";s:11:"server_name";s:9:"localhost";}s:7:"_aGroup";a:2:{s:12:"product_info";a:21:{i:0;s:21:"browser_compatibility";i:1;s:14:"browser_engine";i:2;s:12:"browser_name";i:3;s:13:"browser_token";i:4;s:15:"browser_version";i:5;s:7:"comment";i:6;s:18:"compatibility_flag";i:7;s:15:"device_os_token";i:8;s:6:"others";i:9;s:12:"product_name";i:10;s:15:"product_version";i:11;s:10:"user_agent";i:12;s:18:"is_wireless_device";i:13;s:9:"is_mobile";i:14;s:10:"is_desktop";i:15;s:9:"is_tablet";i:16;s:6:"is_bot";i:17;s:8:"is_email";i:18;s:7:"is_text";i:19;s:25:"device_claims_web_support";i:20;s:9:"client_ip";}s:11:"server_info";a:7:{i:0;s:11:"php_version";i:1;s:9:"server_os";i:2;s:17:"server_os_version";i:3;s:18:"server_http_accept";i:4;s:27:"server_http_accept_language";i:5;s:9:"server_ip";i:6;s:11:"server_name";}}s:8:"_browser";s:6:"Safari";s:15:"_browserVersion";s:5:"7.0.3";s:10:"_userAgent";s:119:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14";s:7:"_images";a:6:{i:0;s:4:"jpeg";i:1;s:3:"gif";i:2;s:3:"png";i:3;s:5:"pjpeg";i:4;s:5:"x-png";i:5;s:3:"bmp";}}";s:10:"user_agent";s:119:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14";s:11:"http_accept";s:63:"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";}";}Zend_Auth|a:1:{s:7:"storage";O:8:"stdClass":3:{s:6:"userId";s:1:"1";s:8:"userName";s:5:"admin";s:4:"role";s:5:"admin";}}__ZF|a:1:{s:14:"FlashMessenger";a:1:{s:4:"ENNH";i:1;}}FlashMessenger|a:1:{s:7:"default";a:1:{i:0;s:44:"You were sucessfully logged in as&nbsp;admin";}}');
+('2b24as5muff94ai55u1g3qjmrcmi69a0a4ktlqpecglddtqf3mj5fsrvnc3t9injuv9cd04vivctmhdb85tav8n0l18nqo8orchtcg2', 1400656229, 86400, '.Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14|a:1:{s:7:"storage";s:3149:"a:6:{s:12:"browser_type";s:7:"desktop";s:6:"config";a:3:{s:23:"identification_sequence";s:14:"mobile,desktop";s:7:"storage";a:1:{s:7:"adapter";s:7:"Session";}s:6:"mobile";a:1:{s:8:"features";a:1:{s:9:"classname";s:45:"Zend_Http_UserAgent_Features_Adapter_Browscap";}}}s:12:"device_class";s:27:"Zend_Http_UserAgent_Desktop";s:6:"device";s:2566:"a:6:{s:10:"_aFeatures";a:28:{s:21:"browser_compatibility";s:6:"Safari";s:14:"browser_engine";s:11:"AppleWebKit";s:12:"browser_name";s:6:"Safari";s:13:"browser_token";s:21:"Intel Mac OS X 10_9_2";s:15:"browser_version";s:5:"7.0.3";s:7:"comment";a:2:{s:4:"full";s:32:"Macintosh; Intel Mac OS X 10_9_2";s:6:"detail";a:2:{i:0;s:9:"Macintosh";i:1;s:22:" Intel Mac OS X 10_9_2";}}s:18:"compatibility_flag";s:9:"Macintosh";s:15:"device_os_token";s:9:"Macintosh";s:6:"others";a:2:{s:4:"full";s:72:"AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14";s:6:"detail";a:3:{i:0;a:3:{i:0;s:41:"AppleWebKit/537.75.14 (KHTML, like Gecko)";i:1;s:11:"AppleWebKit";i:2;s:9:"537.75.14";}i:1;a:3:{i:0;s:13:"Version/7.0.3";i:1;s:7:"Version";i:2;s:5:"7.0.3";}i:2;a:3:{i:0;s:16:"Safari/537.75.14";i:1;s:6:"Safari";i:2;s:9:"537.75.14";}}}s:12:"product_name";s:7:"Mozilla";s:15:"product_version";s:3:"5.0";s:10:"user_agent";s:11:"Mozilla/5.0";s:18:"is_wireless_device";b:0;s:9:"is_mobile";b:0;s:10:"is_desktop";b:1;s:9:"is_tablet";b:0;s:6:"is_bot";b:0;s:8:"is_email";b:0;s:7:"is_text";b:0;s:25:"device_claims_web_support";b:0;s:9:"client_ip";s:12:"96.37.159.19";s:11:"php_version";s:6:"5.4.24";s:9:"server_os";s:6:"apache";s:17:"server_os_version";s:6:"2.2.26";s:18:"server_http_accept";s:63:"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";s:27:"server_http_accept_language";s:5:"en-us";s:9:"server_ip";s:8:"10.0.1.2";s:11:"server_name";s:18:"cms.webinertia.net";}s:7:"_aGroup";a:2:{s:12:"product_info";a:21:{i:0;s:21:"browser_compatibility";i:1;s:14:"browser_engine";i:2;s:12:"browser_name";i:3;s:13:"browser_token";i:4;s:15:"browser_version";i:5;s:7:"comment";i:6;s:18:"compatibility_flag";i:7;s:15:"device_os_token";i:8;s:6:"others";i:9;s:12:"product_name";i:10;s:15:"product_version";i:11;s:10:"user_agent";i:12;s:18:"is_wireless_device";i:13;s:9:"is_mobile";i:14;s:10:"is_desktop";i:15;s:9:"is_tablet";i:16;s:6:"is_bot";i:17;s:8:"is_email";i:18;s:7:"is_text";i:19;s:25:"device_claims_web_support";i:20;s:9:"client_ip";}s:11:"server_info";a:7:{i:0;s:11:"php_version";i:1;s:9:"server_os";i:2;s:17:"server_os_version";i:3;s:18:"server_http_accept";i:4;s:27:"server_http_accept_language";i:5;s:9:"server_ip";i:6;s:11:"server_name";}}s:8:"_browser";s:6:"Safari";s:15:"_browserVersion";s:5:"7.0.3";s:10:"_userAgent";s:119:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14";s:7:"_images";a:6:{i:0;s:4:"jpeg";i:1;s:3:"gif";i:2;s:3:"png";i:3;s:5:"pjpeg";i:4;s:5:"x-png";i:5;s:3:"bmp";}}";s:10:"user_agent";s:119:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14";s:11:"http_accept";s:63:"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";}";}'),
+('emjcubovbej5piiisfec7njd2kkthccm21ue7mn89j9udtktnndlb97mi1fvml46c3bnmktumt7elhoq0fkfbip0cp6ekj70uju8gd2', 1400740238, 86400, '.Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14|a:1:{s:7:"storage";s:3149:"a:6:{s:12:"browser_type";s:7:"desktop";s:6:"config";a:3:{s:23:"identification_sequence";s:14:"mobile,desktop";s:7:"storage";a:1:{s:7:"adapter";s:7:"Session";}s:6:"mobile";a:1:{s:8:"features";a:1:{s:9:"classname";s:45:"Zend_Http_UserAgent_Features_Adapter_Browscap";}}}s:12:"device_class";s:27:"Zend_Http_UserAgent_Desktop";s:6:"device";s:2566:"a:6:{s:10:"_aFeatures";a:28:{s:21:"browser_compatibility";s:6:"Safari";s:14:"browser_engine";s:11:"AppleWebKit";s:12:"browser_name";s:6:"Safari";s:13:"browser_token";s:21:"Intel Mac OS X 10_9_2";s:15:"browser_version";s:5:"7.0.3";s:7:"comment";a:2:{s:4:"full";s:32:"Macintosh; Intel Mac OS X 10_9_2";s:6:"detail";a:2:{i:0;s:9:"Macintosh";i:1;s:22:" Intel Mac OS X 10_9_2";}}s:18:"compatibility_flag";s:9:"Macintosh";s:15:"device_os_token";s:9:"Macintosh";s:6:"others";a:2:{s:4:"full";s:72:"AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14";s:6:"detail";a:3:{i:0;a:3:{i:0;s:41:"AppleWebKit/537.75.14 (KHTML, like Gecko)";i:1;s:11:"AppleWebKit";i:2;s:9:"537.75.14";}i:1;a:3:{i:0;s:13:"Version/7.0.3";i:1;s:7:"Version";i:2;s:5:"7.0.3";}i:2;a:3:{i:0;s:16:"Safari/537.75.14";i:1;s:6:"Safari";i:2;s:9:"537.75.14";}}}s:12:"product_name";s:7:"Mozilla";s:15:"product_version";s:3:"5.0";s:10:"user_agent";s:11:"Mozilla/5.0";s:18:"is_wireless_device";b:0;s:9:"is_mobile";b:0;s:10:"is_desktop";b:1;s:9:"is_tablet";b:0;s:6:"is_bot";b:0;s:8:"is_email";b:0;s:7:"is_text";b:0;s:25:"device_claims_web_support";b:0;s:9:"client_ip";s:12:"96.37.159.19";s:11:"php_version";s:6:"5.4.24";s:9:"server_os";s:6:"apache";s:17:"server_os_version";s:6:"2.2.26";s:18:"server_http_accept";s:63:"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";s:27:"server_http_accept_language";s:5:"en-us";s:9:"server_ip";s:8:"10.0.1.2";s:11:"server_name";s:18:"cms.webinertia.net";}s:7:"_aGroup";a:2:{s:12:"product_info";a:21:{i:0;s:21:"browser_compatibility";i:1;s:14:"browser_engine";i:2;s:12:"browser_name";i:3;s:13:"browser_token";i:4;s:15:"browser_version";i:5;s:7:"comment";i:6;s:18:"compatibility_flag";i:7;s:15:"device_os_token";i:8;s:6:"others";i:9;s:12:"product_name";i:10;s:15:"product_version";i:11;s:10:"user_agent";i:12;s:18:"is_wireless_device";i:13;s:9:"is_mobile";i:14;s:10:"is_desktop";i:15;s:9:"is_tablet";i:16;s:6:"is_bot";i:17;s:8:"is_email";i:18;s:7:"is_text";i:19;s:25:"device_claims_web_support";i:20;s:9:"client_ip";}s:11:"server_info";a:7:{i:0;s:11:"php_version";i:1;s:9:"server_os";i:2;s:17:"server_os_version";i:3;s:18:"server_http_accept";i:4;s:27:"server_http_accept_language";i:5;s:9:"server_ip";i:6;s:11:"server_name";}}s:8:"_browser";s:6:"Safari";s:15:"_browserVersion";s:5:"7.0.3";s:10:"_userAgent";s:119:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14";s:7:"_images";a:6:{i:0;s:4:"jpeg";i:1;s:3:"gif";i:2;s:3:"png";i:3;s:5:"pjpeg";i:4;s:5:"x-png";i:5;s:3:"bmp";}}";s:10:"user_agent";s:119:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14";s:11:"http_accept";s:63:"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";}";}Zend_Auth|a:1:{s:7:"storage";O:8:"stdClass":3:{s:6:"userId";s:1:"1";s:8:"userName";s:5:"admin";s:4:"role";s:5:"admin";}}__ZF|a:1:{s:14:"FlashMessenger";a:1:{s:4:"ENNH";i:1;}}FlashMessenger|a:1:{s:7:"default";a:1:{i:0;s:44:"You were sucessfully logged in as&nbsp;admin";}}'),
+('uges7qd8pkqq1ltf7ee4a39ffka5236phscavlk9hg8hsb38t4orcs5n36ql8iulhsrdbvip6p6v92fo1s359rra8vuatu07vvu1o52', 1400630815, 86400, '.Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14|a:1:{s:7:"storage";s:3150:"a:6:{s:12:"browser_type";s:7:"desktop";s:6:"config";a:3:{s:23:"identification_sequence";s:14:"mobile,desktop";s:7:"storage";a:1:{s:7:"adapter";s:7:"Session";}s:6:"mobile";a:1:{s:8:"features";a:1:{s:9:"classname";s:45:"Zend_Http_UserAgent_Features_Adapter_Browscap";}}}s:12:"device_class";s:27:"Zend_Http_UserAgent_Desktop";s:6:"device";s:2567:"a:6:{s:10:"_aFeatures";a:28:{s:21:"browser_compatibility";s:6:"Safari";s:14:"browser_engine";s:11:"AppleWebKit";s:12:"browser_name";s:6:"Safari";s:13:"browser_token";s:21:"Intel Mac OS X 10_9_3";s:15:"browser_version";s:5:"7.0.3";s:7:"comment";a:2:{s:4:"full";s:32:"Macintosh; Intel Mac OS X 10_9_3";s:6:"detail";a:2:{i:0;s:9:"Macintosh";i:1;s:22:" Intel Mac OS X 10_9_3";}}s:18:"compatibility_flag";s:9:"Macintosh";s:15:"device_os_token";s:9:"Macintosh";s:6:"others";a:2:{s:4:"full";s:72:"AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14";s:6:"detail";a:3:{i:0;a:3:{i:0;s:41:"AppleWebKit/537.75.14 (KHTML, like Gecko)";i:1;s:11:"AppleWebKit";i:2;s:9:"537.75.14";}i:1;a:3:{i:0;s:13:"Version/7.0.3";i:1;s:7:"Version";i:2;s:5:"7.0.3";}i:2;a:3:{i:0;s:16:"Safari/537.75.14";i:1;s:6:"Safari";i:2;s:9:"537.75.14";}}}s:12:"product_name";s:7:"Mozilla";s:15:"product_version";s:3:"5.0";s:10:"user_agent";s:11:"Mozilla/5.0";s:18:"is_wireless_device";b:0;s:9:"is_mobile";b:0;s:10:"is_desktop";b:1;s:9:"is_tablet";b:0;s:6:"is_bot";b:0;s:8:"is_email";b:0;s:7:"is_text";b:0;s:25:"device_claims_web_support";b:0;s:9:"client_ip";s:13:"64.53.243.105";s:11:"php_version";s:6:"5.4.24";s:9:"server_os";s:6:"apache";s:17:"server_os_version";s:6:"2.2.26";s:18:"server_http_accept";s:63:"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";s:27:"server_http_accept_language";s:5:"en-us";s:9:"server_ip";s:8:"10.0.1.2";s:11:"server_name";s:18:"cms.webinertia.net";}s:7:"_aGroup";a:2:{s:12:"product_info";a:21:{i:0;s:21:"browser_compatibility";i:1;s:14:"browser_engine";i:2;s:12:"browser_name";i:3;s:13:"browser_token";i:4;s:15:"browser_version";i:5;s:7:"comment";i:6;s:18:"compatibility_flag";i:7;s:15:"device_os_token";i:8;s:6:"others";i:9;s:12:"product_name";i:10;s:15:"product_version";i:11;s:10:"user_agent";i:12;s:18:"is_wireless_device";i:13;s:9:"is_mobile";i:14;s:10:"is_desktop";i:15;s:9:"is_tablet";i:16;s:6:"is_bot";i:17;s:8:"is_email";i:18;s:7:"is_text";i:19;s:25:"device_claims_web_support";i:20;s:9:"client_ip";}s:11:"server_info";a:7:{i:0;s:11:"php_version";i:1;s:9:"server_os";i:2;s:17:"server_os_version";i:3;s:18:"server_http_accept";i:4;s:27:"server_http_accept_language";i:5;s:9:"server_ip";i:6;s:11:"server_name";}}s:8:"_browser";s:6:"Safari";s:15:"_browserVersion";s:5:"7.0.3";s:10:"_userAgent";s:119:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14";s:7:"_images";a:6:{i:0;s:4:"jpeg";i:1;s:3:"gif";i:2;s:3:"png";i:3;s:5:"pjpeg";i:4;s:5:"x-png";i:5;s:3:"bmp";}}";s:10:"user_agent";s:119:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14";s:11:"http_accept";s:63:"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";}";}');
 
 -- --------------------------------------------------------
 
@@ -172,6 +197,51 @@ INSERT INTO `settings` (`moduleName`, `label`, `variable`, `value`, `settingType
 ('general', '', 'siteName', 'Aurora CMS', 'TextBox', 'admin'),
 ('contact', '', 'twitterUrl', 'http://www.twitter.com', 'TextBox', 'admin'),
 ('general', '', 'webMasterEmail', 'noreply@dirextion.com', 'TextBox', 'admin');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `skins`
+--
+
+DROP TABLE IF EXISTS `skins`;
+CREATE TABLE IF NOT EXISTS `skins` (
+  `skinId` int(11) NOT NULL AUTO_INCREMENT,
+  `skinName` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`skinId`),
+  UNIQUE KEY `skinName` (`skinName`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `skins`
+--
+
+INSERT INTO `skins` (`skinId`, `skinName`) VALUES
+(1, 'desktop');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `skin_settings`
+--
+
+DROP TABLE IF EXISTS `skin_settings`;
+CREATE TABLE IF NOT EXISTS `skin_settings` (
+  `recordId` int(11) NOT NULL AUTO_INCREMENT,
+  `skinId` int(11) NOT NULL,
+  `spec` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`recordId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `skin_settings`
+--
+
+INSERT INTO `skin_settings` (`recordId`, `skinId`, `spec`, `value`) VALUES
+(1, 1, 'skinVersion', '2.0.0'),
+(2, 1, 'appVersion', '2.0.0'),
+(3, 1, 'isCurrentSkin', '1');
 
 -- --------------------------------------------------------
 
