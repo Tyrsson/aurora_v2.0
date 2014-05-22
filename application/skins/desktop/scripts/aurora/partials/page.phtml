@@ -1,3 +1,23 @@
+<?php 
+// inject the page into the helper so we can let it pull the node list
+$this->page($this->page);
+?>
+<div class="grid-90 featured-content-item">
+    <div class="grid-100">
+        <h3>
+            <?php echo $this->page()->getPageProperty('name'); ?>
+        </h3>
+    </div>
+    <div class="clear"></div>
+    <div class="grid-20">
+        <img class="featured-image" src="<?php echo $this->baseUrl('/') . 'modules/cms/content/'.$this->page()->getPageProperty('image'); ?>" />
+    </div>
+    <div class="grid-80">
+        <p>
+            <?php echo $this->page()->getPageProperty('description'); ?>
+        </p>
+    </div>
 
-
+</div>
+<div class="clear"></div>
 

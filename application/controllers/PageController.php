@@ -3,14 +3,16 @@
 /**
  * PageController
  * 
- * @author
- * @version 
+ * @author Joey Smith
+ * @version 2.0.0
  */
 
 require_once 'Zend/Controller/Action.php';
 
 class PageController extends Zend_Controller_Action
 {
+    public $acl;
+    
 	public function preDispatch()
 	{
 		$this->_helper->actionContext();
@@ -28,15 +30,19 @@ class PageController extends Zend_Controller_Action
 
     public function listAction()
     {
+        
+        
         $pageModel = new Aurora_Model_Pages();
 
         $currentPages = $pageModel->fetchListing(true);
         
         if($currentPages->count() > 0) {
             $this->view->pages = $currentPages;
-        }else{
+        }
+        else {
             $this->view->pages = null;
         }
+        $this->view->currentPageNumber = $this->_request->getParam('page', 1);
     }
     public function viewAction()
     {
