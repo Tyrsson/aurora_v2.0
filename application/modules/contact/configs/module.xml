@@ -1,0 +1,26 @@
+<configs>
+<contact>
+        <contact-index>
+            <label>Contact Us</label>
+            <uri>/contact</uri>
+        </contact-index>
+    </contact>
+    <admin-contact>
+        <manage-contact>
+            <label>Contact Manager</label>
+		    <uri>/admin/contact</uri>
+		    <resource>resources.admin.contact</resource>
+            <privilege>admin.manage.contact</privilege>
+            <class>menuitem</class>
+            	<pages>
+            	    <admin-newsletter-export>
+                		<label>Export Addresses</label>
+		    			<uri>/admin/contact/newsletter/export</uri>
+		    			<resource>resources.admin.contact</resource>
+            			<privilege>admin.manage.contact</privilege>
+            			<class>menuitem</class>
+            		</admin-newsletter-export>
+            	</pages>
+        </manage-contact>
+    </admin-contact>
+</configs>
